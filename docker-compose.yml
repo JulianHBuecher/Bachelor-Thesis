@@ -1,0 +1,152 @@
+version: "3.8"
+# based on:
+# https://github.com/vegasbrianc/prometheus/blob/master/docker-compose.yml
+services:
+    identityserver:
+        container_name: identityserver
+        build: ./IdentityServer/.
+        image: jb-thesis-identityserver:dev
+        ports:
+            - 80
+        environment:
+            - ASPNETCORE_URLS=http://+
+            - ASPNETCORE_ENVIRONMENT=Docker
+        networks:
+            - devnetwork
+        deploy:
+            restart_policy:
+                condition: on-failure
+    
+    weatherapi:
+        container_name: weatherapi
+        build: ./WeatherApi/.
+        image: jb-thesis-weatherapi:dev
+        ports:
+            - 80
+        environment: 
+            - ASPNETCORE_URLS=http://+
+            - ASPNETCORE_ENVIRONMENT=Docker
+        networks:
+            - devnetwork
+        deploy:
+            restart_policy:
+                condition: on-failure
+    
+    locationapi:
+        container_name: locationapi
+        build: ./LocationApi/.
+        image: jb-thesis-locationapi:dev
+        ports:
+            - 80
+        environment: 
+            - ASPNETCORE_URLS=http://+
+            - ASPNETCORE_ENVIRONMENT=Docker
+        networks:
+            - devnetwork
+        deploy:
+            restart_policy:
+                condition: on-failure
+           
+    webapp:
+        container_name: angular-webapp
+        build: ./webapp/.
+        image: jb-thesis-angular-webapp:dev
+        ports:
+            - 80
+        networks:
+            - devnetwork
+        deploy:
+            restart_policy:
+                condition: on-failure
+
+    reverse-proxy:
+        container_name: reverse-proxy
+        build: ./ReverseProxy/.
+        image: jb-thesis-reverse-proxy:dev
+        ports:
+            - "80:80"
+            - "443:443"
+        networks: 
+            devnetwork:
+                aliases:
+                    - "reverse.proxy.localhost"
+            # - devnetwork
+        depends_on: 
+            - identityserver
+            - webapp
+            - weatherapi
+            - locationapi
+        deploy:
+            restart_policy:
+                condition: on-failure
+
+    elasticsearch:
+        container_name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+        ports:
+            - "9200:9200"
+        volumes:
+            - elasticsearch_data:/usr/share/elasticsearch/data
+        environment:
+            - xpack.monitoring.enabled=true
+            - xpack.watcher.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            - discovery.type=single-node
+        networks:
+            - devnetwork
+        restart: always
+    
+    kibana:
+        container_name: kibana
+        image: docker.elastic.co/kibana/kibana:7.9.3
+        ports:
+            - "5601:5601"
+        depends_on:
+            - elasticsearch
+        environment:
+            - SERVER_BASEPATH="/kibana"
+            - ELASTICSEARCH_URL=http://elasticsearch:9200
+        networks:
+            - devnetwork
+        restart: always
+    
+    grafana:
+        container_name: grafana
+        image: grafana/grafana:latest
+        ports: 
+            - 3000:3000
+        depends_on: 
+            - prometheus
+        volumes: 
+            - grafana_data:/var/lib/grafana
+            - ./Grafana/provisioning/:/etc/grafana/provisioning/
+        env_file:
+            - ./Grafana/config.monitoring
+        networks: 
+           - devnetwork
+        restart: always
+    
+    prometheus:
+        container_name: prometheus
+        image: prom/prometheus:latest
+        volumes: 
+            - ./Prometheus/:/etc/prometheus/
+            - prometheus_data:/prometheus
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.tsdb.path=/prometheus'
+            - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+            - '--web.console.templates=/usr/share/prometheus/consoles'
+        ports:
+            - 9090:9090
+        restart: always
+
+    
+networks: 
+    devnetwork:
+        driver: bridge
+
+volumes:
+    elasticsearch_data: {}
+    prometheus_data: {}
+    grafana_data: {}

@@ -1,0 +1,23 @@
+apiVersion: 1
+
+# list of datasources that should be deleted from the db
+deletedDatasources:
+  - name: Prometheus
+    orgId: 1
+
+# list of datasources to insert/ipdated depending
+# whats avaliable in the database
+datasources:
+    # Name of the datasource (req)
+  - name: Prometheus
+    # Type of datasource (req)
+    type: prometheus
+    # Access mode (direct or proxy) (req)
+    access: proxy
+    # Default to 1, if not specified
+    orgId: 1
+    # Url for Connection
+    url: http://prometheus:9090
+    # Allow users to edit datasources from the UI
+    editable: true
+    version: 1

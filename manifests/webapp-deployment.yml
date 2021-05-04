@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  namespace: jb-thesis-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular-webapp
+  template:
+    metadata:
+      labels:
+        app: angular-webapp
+    spec:
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      containers:
+      - name: angular-webapp
+        image: studentenk8sregistry.azurecr.io/jb-thesis-angular-webapp:v1
+        volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-webapp
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: angular-webapp

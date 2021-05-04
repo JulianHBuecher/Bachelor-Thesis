@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+  labels:
+    app: prometheus
+    purpose: metrics
+  namespace: jb-thesis-project
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+      purpose: metrics
+  template:
+    metadata:
+      labels:
+        app: prometheus
+        purpose: metrics
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/prometheus/prometheus.yml
+            subPath: prometheus.yml
+        ports:
+        - containerPort: 9090
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  selector:
+    app: prometheus
+    purpose: metrics
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9090
+

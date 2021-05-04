@@ -1,0 +1,23 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  # name: letsencrypt-staging
+  name: letsencrypt-prod
+  namespace: jb-thesis-project
+spec:
+  acme:
+    # Testing
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # Production
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: Julian.Buecher@STPAG2014.onmicrosoft.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+          podTemplate:
+            spec:
+              nodeSelector:
+                "kubernetes.io/os": linux

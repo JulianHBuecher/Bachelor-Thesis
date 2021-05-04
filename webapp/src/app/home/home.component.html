@@ -1,0 +1,36 @@
+<div>Welcome to Home Route</div>
+
+<div *ngIf="isAuthenticated$ | async as isAuthenticated; else noAuth">
+  <button (click)="authService.logout()">Logout</button>
+  <button (click)="authService.refreshSession()">Refresh Session</button>
+  <hr />
+
+  <br />
+
+  Is Authenticated: {{ isAuthenticated }}
+
+  <br />
+  Your User Data:
+  <pre>{{ userData$ | async | json }}</pre>
+
+  <br />
+</div>
+
+<ng-template #noAuth>
+  <button (click)="authService.login()">Login</button>
+  <hr />
+  You are not authenticated!
+</ng-template>
+
+Configuration loaded:
+<pre>{{ configuration | json }}</pre>
+
+<div class="container py-5 mt-5">
+  <div class="jumbotron" style="background-color: mediumblue;color: white;">
+    <h1>Home Component</h1>
+    <p class="lead">
+      This demo shows the integration of an Angular application with a Backend for Frontend
+    </p>
+    <a class="btn btn-lg btn-primary" href="" role="button">Let's go!</a>
+  </div>
+</div>

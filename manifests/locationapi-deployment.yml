@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locationapi-deployment
+  namespace: jb-thesis-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locationapi
+  template:
+    metadata:
+      labels:
+        app: locationapi
+    spec:
+      containers:
+      - name: locationapi
+        image: studentenk8sregistry.azurecr.io/jb-thesis-locationapi:v1
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://+
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Kubernetes
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: locationapi
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: locationapi

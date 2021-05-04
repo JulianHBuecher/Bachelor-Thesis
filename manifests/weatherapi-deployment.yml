@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherapi-deployment
+  namespace: jb-thesis-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weatherapi
+  template:
+    metadata:
+      labels:
+        app: weatherapi
+    spec:
+      containers:
+      - name: weatherapi
+        image: studentenk8sregistry.azurecr.io/jb-thesis-weatherapi:v1
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://+
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Kubernetes
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weatherapi
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: weatherapi

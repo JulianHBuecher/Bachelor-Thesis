@@ -1,0 +1,52 @@
+# Customizing your Ingress Deployment (Nginx Ingresses, Helm, Istio): 
+# https://github.com/brbarnett/hello-k8s
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+    name: tls-ingress
+    namespace: jb-thesis-project
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        more_set_headers "Strict-Transport-Security: max-age=31536000; includeSubDomains" always;
+        more_set_headers "X-Frame-Options: Deny";
+        more_set_headers "X-Xss-Protection: 1; mode=block";
+        more_set_headers "X-Content-Type-Options: nosniff";
+spec:
+    tls:
+    - hosts:
+      - ''
+      secretName: tls-secret
+    rules:
+    - host: ''
+      http:
+        paths:
+        - backend:
+            serviceName: angular-webapp
+            servicePort: 80
+          path: /(.*)
+        - backend:
+            serviceName: identityserver
+            servicePort: 80
+          path: /identity/(.*)
+        - backend:
+            serviceName: weatherapi
+            servicePort: 80
+          path: /weatherdata/(.*)
+        - backend:
+            serviceName: locationapi
+            servicePort: 80
+          path: /locationdata/(.*)
+        - backend:
+            serviceName: kibana
+            servicePort: 80
+          path: /kibana/(.*)
+        - backend:
+            serviceName: grafana
+            servicePort: 80
+          path: /grafana/(.*)

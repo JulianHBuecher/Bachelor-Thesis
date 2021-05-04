@@ -1,0 +1,24 @@
+<h1>Location Data</h1>
+
+<p *ngIf="!locationdata"><em>Loading ...</em></p>
+
+<div class="container" style="margin-top: 70px;">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Country Code</th>
+        <th>Population</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of locationdata">
+        <td>{{ data.name }}</td>
+        <td>{{ data.country }}</td>
+        <td>{{ data.countryCode }}</td>
+        <td>{{ data.population }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

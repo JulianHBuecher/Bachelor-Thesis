@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identityserver-deployment
+  namespace: jb-thesis-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identityserver
+  template:
+    metadata:
+      labels:
+        app: identityserver
+    spec:
+      containers:
+      - name: identityserver
+        image: studentenk8sregistry.azurecr.io/jb-thesis-identityserver:v1
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://+
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Kubernetes
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: identityserver
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: identityserver
