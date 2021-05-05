@@ -12,16 +12,9 @@ namespace IdentityServer
         {
             app.Use(async (context, next) =>
             {
-                if (IsFromProxy(context, Configuration) && GetConfigurationValue(Configuration, "ProxyBasePath", out var proxyHeader))
+                if (IsFromProxy(context, Configuration) && GetConfigurationValue(Configuration, "BasepathConfig:ProxyBasePath", out var proxyHeader))
                 {
-                    if (IsFromProxyWithCert(context, Configuration) && GetConfigurationValue(Configuration, "MtlsBasePath", out var proxyBase))
-                    {
-                        SetBasePath(context, proxyBase);
-                    }
-                    else
-                    {
-                        SetBasePath(context, proxyHeader);
-                    }
+                    SetBasePath(context, proxyHeader);
                 }
                 else
                 {
@@ -32,19 +25,7 @@ namespace IdentityServer
         }
         public static bool IsFromProxy(HttpContext context, IConfiguration Configuration)
         {
-            if (GetConfigurationValue(Configuration, "ProxyHeader", out var proxyHeader))
-            {
-                return context.Request.Headers.ContainsKey(proxyHeader);
-            } 
-            else
-            {
-                //Log.Information($"ProxyHeader has not accured!");
-                return false;
-            }
-        }
-        public static bool IsFromProxyWithCert(HttpContext context, IConfiguration Configuration)
-        {
-            if (GetConfigurationValue(Configuration, "MtlsHeader", out var proxyHeader))
+            if (GetConfigurationValue(Configuration, "BasepathConfig:ProxyHeader", out var proxyHeader))
             {
                 return context.Request.Headers.ContainsKey(proxyHeader);
             } 

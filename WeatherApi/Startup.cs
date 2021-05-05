@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 using Serilog;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace WeatherApi
 {
@@ -34,20 +34,12 @@ namespace WeatherApi
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", o =>
                 {
-                    //o.Authority = Configuration.GetValue<string>("IdentityServer:Authority");
-                    //o.Authority = "https://reverse.proxy.localhost/identity/";
-                    o.Authority = "http://identityserver";
-                    o.Audience = "weatherdata";
+                    o.Authority = Configuration.GetValue<string>("IdentityServer:Authority");
+                    o.Audience = Configuration.GetValue<string>("IdentityServer:Audience");
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false,
-                        //ValidIssuer = "https://reverse.proxy.localhost/identity/"
-                        //ValidIssuer = "http://identityserver"
-                        ValidIssuers = new List<string>()
-                        {
-                            "https://reverse.proxy.localhost/identity",
-                            "http://identityserver"
-                        }
+                        ValidIssuers = Configuration.GetSection("IdentityServer:ValidIssuers").GetChildren().Select(i => i.Value).ToList()
                     };
                     o.RequireHttpsMetadata = Configuration.GetValue<bool>("IdentityServer:RequireHttpsMetadata");
                 });

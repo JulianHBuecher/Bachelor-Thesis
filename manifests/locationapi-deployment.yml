@@ -18,9 +18,44 @@ spec:
         image: studentenk8sregistry.azurecr.io/jb-thesis-locationapi:v1
         env:
         - name: ASPNETCORE_URLS
-          value: http://+
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: ASPNETCORE_URLS
         - name: ASPNETCORE_ENVIRONMENT
-          value: Kubernetes
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: ASPNETCORE_ENVIRONMENT
+        - name: IdentityServer__Authority
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: IdentityServer__Authority
+        - name: IdentityServer__Audience
+          value: locationdata
+        - name: IdentityServer__ValidIssuers__0
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: IdentityServer__ValidIssuers__0
+        - name: IdentityServer__ValidIssuers__1
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: IdentityServer__ValidIssuers__1
+        - name: IdentityServer__RequireHttpsMetadata
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: IdentityServer__RequireHttpsMetadata
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
         ports:
         - containerPort: 80
 ---

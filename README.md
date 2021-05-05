@@ -8,7 +8,7 @@
 
 ## Motivation
 Im Rahmen der Thesis "Sicherheitskonzepte für Anwendungen in der Cloud" wird anhand einer bestehenden Cloud-Applikationen eine Mechanismus zur Absicherung der Anwendung konzipiert. Hierbei handelt es sich um einen Software-as-a-Service Dienst, der dem Endkunden zur Verfügung gestellt werden soll. Dieser hat per Definition somit keinerlei Möglichkeiten die Platform oder die darunterliegende Infrastruktur gegen Angriffe von Außerhalb zu konfigurieren. Diese Vorkehrungen müssen aus diesem Grunde von dem Anbieter der Cloud-Dienstes eingerichtet werden. Von Seiten der Rechenzentren, die Dienste wie Platform-as-a-Service oder Infrastructure-as-a-Service anbieten, wird in den häufigsten Fällen direkt an der Firewall auf verdächtiges Verhalten im Netzwerk-Traffic geachtet und bei auftauchenden Anomalien ein vorgefertigtes Protokoll ausgeführt, das die betriebenen Anwendungen von Gefahren wie Denial of Service (DoS) oder Distributed Denial of Service (DDoS) schützen soll. Dies ist jedoch nicht immer gegeben und die Vorkehrungen, die von den Anbietern getroffen werden, sind in den meisten Fällen nicht klar ersichtlich. <br> <br>
-Das Endprodukt dieser Arbeit soll durch Verwendung von maschinellen Lernalgorithmen und der Funktion als Proxy den eingehenden Netzwerkverkehr überwachen und bei Anomalien ein Throttling einleiten, das die oben beschriebenen Threat-Modelle abwehren soll.
+Das Endprodukt dieser Arbeit soll durch Verwendung von maschinellen Lernalgorithmen und der Funktion als Proxy den eingehenden Netzwerkverkehr überwachen und bei Anomalien ein Throttling einleiten, das die oben beschriebenen Threat-Modelle abwehren soll. <br>
 [back to TOC](#inhaltsverzeichnis)
  
 ## Architektur
@@ -33,5 +33,6 @@ Bei erfolgreicher Implementierung des Intrusion Detection bzw. Prevention System
 ### Links
 - Prometheus Konfiguration für Docker-Compose aus dem aktuellen [Repo](https://github.com/vegasbrianc/prometheus/blob/master/docker-compose.yml)
 - Angular OAuth OIDC Package Konfiguration aus dem aktuellen [Repo](https://github.com/damienbod/angular-auth-oidc-client) <br> <br>
+- Konfiguration für das Grafana Dashboard von [hier](https://dale-bingham-cingulara.medium.com/net-core-web-api-metrics-with-prometheus-and-grafana-fe84a52d9843)
 
 [back to TOC](#inhaltsverzeichnis)

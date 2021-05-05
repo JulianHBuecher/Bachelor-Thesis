@@ -1,36 +1,26 @@
-<div>Welcome to Home Route</div>
-
-<div *ngIf="isAuthenticated$ | async as isAuthenticated; else noAuth">
-  <button (click)="authService.logout()">Logout</button>
-  <button (click)="authService.refreshSession()">Refresh Session</button>
-  <hr />
-
-  <br />
-
-  Is Authenticated: {{ isAuthenticated }}
-
-  <br />
-  Your User Data:
-  <pre>{{ userData$ | async | json }}</pre>
-
-  <br />
-</div>
-
-<ng-template #noAuth>
-  <button (click)="authService.login()">Login</button>
-  <hr />
-  You are not authenticated!
-</ng-template>
-
-Configuration loaded:
-<pre>{{ configuration | json }}</pre>
-
 <div class="container py-5 mt-5">
-  <div class="jumbotron" style="background-color: mediumblue;color: white;">
-    <h1>Home Component</h1>
+
+
+  <div class="jumbotron" style="background-color: #adf;color: black;height: calc(45vh);">
+    <h1>Landing Page</h1>
     <p class="lead">
-      This demo shows the integration of an Angular application with a Backend for Frontend
+      Frontend Part of Bachelor Thesis
     </p>
-    <a class="btn btn-lg btn-primary" href="" role="button">Let's go!</a>
+    <div *ngIf="isAuthenticated$ | async as isAuthenticated; else noAuth">
+      <div>
+        <button type="button" class="btn btn-danger" (click)="authService.logout()">Logout</button>
+        <button type="button" class="btn btn-info" (click)="authService.refreshSession()">Refresh Session</button>
+      </div>
+      <!-- <pre>{{ userData$ | async | json }}</pre> -->
+      <p><br />Hey {{ user.name }}! Welcome on my site.</p>
+    </div>
+    <ng-template #noAuth>
+      <button type="button" class="btn btn-lg btn-secondary" (click)="authService.login()">Login</button>
+      <p><br />
+        <b>
+          You are not authenticated. Please login!
+        </b>
+      </p>
+    </ng-template>
   </div>
 </div>

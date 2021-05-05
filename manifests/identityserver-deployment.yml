@@ -18,9 +18,62 @@ spec:
         image: studentenk8sregistry.azurecr.io/jb-thesis-identityserver:v1
         env:
         - name: ASPNETCORE_URLS
-          value: http://+
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: ASPNETCORE_URLS
         - name: ASPNETCORE_ENVIRONMENT
-          value: Kubernetes
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: ASPNETCORE_ENVIRONMENT
+        - name: WebApp__Callback-Url
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: WebApp__Callback-Url
+        - name: WebApp__Silent-Refresh-Url
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: WebApp__Silent-Refresh-Url
+        - name: WebApp__Front-Channel-Logout-Url
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: WebApp__Front-Channel-Logout-Url
+        - name: WebApp__Post-Logout-Redirect-Url
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: WebApp__Post-Logout-Redirect-Url
+        - name: WebApp__Additional-Logout-Redirect-Url
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: WebApp__Additional-Logout-Redirect-Url
+        - name: BasepathConfig__ProxyHeader
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: BasepathConfig__ProxyHeader
+        - name: BasepathConfig__InternalBasePath
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: BasepathConfig__InternalBasePath
+        - name: BasepathConfig__ProxyBasePath
+          valueFrom:
+            configMapKeyRef:
+              name: jb-thesis-project-configmap
+              key: BasepathConfig__ProxyBasePath
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
         ports:
         - containerPort: 80
 ---

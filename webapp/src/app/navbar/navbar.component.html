@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
   <a class="navbar-brand" routerLinkActive="active" routerLink="/">
-    <img src="" width="130" height="40" class="d-inline-block align-center pr-3" alt="">
-      Bachelor-Thesis Prototype
+    <img src="../../assets/site-logo.png" width="80" height="60" class="d-inline-block align-center pr-3" alt="">
+      Project Bachelor-Thesis
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
   aria-controls="navbarCollapse"
@@ -19,12 +19,6 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/fetch-locationdata">Call Protected Location API</a>
-      </li>
-      <li *ngIf="!isAuthenticated" class="nav-item">
-        <a class="nav-link" (click)="login()">Login</a>
-      </li>
-      <li *ngIf="isAuthenticated" class="nav-item">
-        <a class="nav-link" (click)="logout()">Logout</a>
       </li>
     </ul>
   </div>

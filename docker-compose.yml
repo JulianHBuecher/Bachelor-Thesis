@@ -11,6 +11,14 @@ services:
         environment:
             - ASPNETCORE_URLS=http://+
             - ASPNETCORE_ENVIRONMENT=Docker
+            - WebApp__Callback-Url=https://reverse.proxy.localhost/
+            - WebApp__Silent-Refresh-Url=https://reverse.proxy.localhost/silent-renew.html
+            - WebApp__Front-Channel-Logout-Url=https://reverse.proxy.localhost/
+            - WebApp__Post-Logout-Redirect-Url=https://reverse.proxy.localhost/
+            - WebApp__Additional-Logout-Redirect-Url=https://reverse.proxy.localhost/unauthorized
+            - BasepathConfig__ProxyHeader=X-Forwarded-For
+            - BasepathConfig__InternalBasePath=/
+            - BasepathConfig__ProxyBasePath=/identity
         networks:
             - devnetwork
         deploy:
@@ -26,6 +34,11 @@ services:
         environment: 
             - ASPNETCORE_URLS=http://+
             - ASPNETCORE_ENVIRONMENT=Docker
+            - IdentityServer__Authority=http://identityserver
+            - IdentityServer__Audience=weatherdata
+            - IdentityServer__ValidIssuers__0=https://reverse.proxy.localhost/identity
+            - IdentityServer__ValidIssuers__1=http://identityserver
+            - IdentityServer__RequireHttpsMetadata=false
         networks:
             - devnetwork
         deploy:
@@ -41,6 +54,11 @@ services:
         environment: 
             - ASPNETCORE_URLS=http://+
             - ASPNETCORE_ENVIRONMENT=Docker
+            - IdentityServer__Authority=http://identityserver
+            - IdentityServer__Audience=locationdata
+            - IdentityServer__ValidIssuers__0=https://reverse.proxy.localhost/identity
+            - IdentityServer__ValidIssuers__1=http://identityserver
+            - IdentityServer__RequireHttpsMetadata=false
         networks:
             - devnetwork
         deploy:
@@ -139,6 +157,8 @@ services:
             - '--web.console.templates=/usr/share/prometheus/consoles'
         ports:
             - 9090:9090
+        networks: 
+            - devnetwork
         restart: always
 
     

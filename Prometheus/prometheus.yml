@@ -30,8 +30,8 @@ scrape_configs:
           - node
         target_label: instance
 
-        static_configs:
-          - targets: ['weatherapi:80']
+    static_configs:
+      - targets: ['weatherapi:80']
   
   # The job name is added as a label `job=<job_name` to any timeseries
   - job_name: 'locationapi-metrics'
@@ -52,8 +52,8 @@ scrape_configs:
           - node
         target_label: instance
 
-        static_configs:
-          - targets: ['locationapi:80']
+    static_configs:
+      - targets: ['locationapi:80']
         
         
   # The job name is added as a label `job=<job_name` to any timeseries

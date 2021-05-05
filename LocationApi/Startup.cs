@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 using Serilog;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace LocationApi
 {
@@ -34,18 +34,12 @@ namespace LocationApi
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", o =>
                 {
-                    //o.Authority = Configuration.GetValue<string>("IdentityServer:Authority");
-                    //o.Authority = "https://reverse.proxy.localhost/identity/";
-                    o.Authority = "http://identityserver";
-                    o.Audience = "locationdata";
+                    o.Authority = Configuration.GetValue<string>("IdentityServer:Authority");
+                    o.Audience = Configuration.GetValue<string>("IdentityServer:Audience");
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false,
-                        ValidIssuers = new List<string>()
-                        {
-                            "https://reverse.proxy.localhost/identity",
-                            "http://identityserver"
-                        }
+                        ValidIssuers = Configuration.GetSection("IdentityServer:ValidIssuers").GetChildren().Select(i => i.Value).ToList()
                     };
                     o.RequireHttpsMetadata = Configuration.GetValue<bool>("IdentityServer:RequireHttpsMetadata");
                 });

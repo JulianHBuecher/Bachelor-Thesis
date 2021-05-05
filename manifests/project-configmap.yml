@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jb-thesis-project-configmap
+  namespace: jb-thesis-project
+data:
+  ASPNETCORE_URLS: http://+
+  ASPNETCORE_ENVIRONMENT: Kubernetes
+  IdentityServer__Authority: http://identityserver
+  IdentityServer__ValidIssuers__0: https://jb-thesis-project.ddns.net/identity
+  IdentityServer__ValidIssuers__1: http://identityserver
+  IdentityServer__RequireHttpsMetadata: "false"
+  WebApp__Callback-Url: https://jb-thesis-project.ddns.net/
+  WebApp__Silent-Refresh-Url: https://jb-thesis-project.ddns.net/silent-renew.html
+  WebApp__Front-Channel-Logout-Url: https://jb-thesis-project.ddns.net/
+  WebApp__Post-Logout-Redirect-Url: https://jb-thesis-project.ddns.net/
+  WebApp__Additional-Logout-Redirect-Url: https://jb-thesis-project.ddns.net/unauthorized
+  BasepathConfig__ProxyHeader: X-Forwarded-For
+  BasepathConfig__InternalBasePath: /
+  BasepathConfig__ProxyBasePath: /identity

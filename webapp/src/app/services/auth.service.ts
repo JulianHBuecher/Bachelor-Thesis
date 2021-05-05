@@ -37,7 +37,6 @@ export class AuthService {
     const body = JSON.stringify(data);
     return this.http.post(url, body, { headers: this.getHeaders() })
       .pipe(catchError((error) => {
-        // this.oidcSecurityService.handleError(error);
         return throwError(error);
       }));
   }
