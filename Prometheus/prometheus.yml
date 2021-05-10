@@ -18,17 +18,17 @@ scrape_configs:
     scrape_interval: 5s
 
     # List of all metric relabel configurations
-    metric_relabel_configs:
-      - action: replace
-        regex: (.*)
-        replacement: $1
-        source_labels:
-          - __meta_kubernetes_pod_node_name
-        target_label: kubernetes_node
-      - action: replace
-        source_labels:
-          - node
-        target_label: instance
+    # metric_relabel_configs:
+    #   - action: replace
+    #     regex: (.*)
+    #     replacement: $1
+    #     source_labels:
+    #       - __meta_kubernetes_pod_node_name
+    #     target_label: kubernetes_node
+    #   - action: replace
+    #     source_labels:
+    #       - node
+    #     target_label: instance
 
     static_configs:
       - targets: ['weatherapi:80']
@@ -40,17 +40,17 @@ scrape_configs:
     scrape_interval: 5s
 
     # List of all metric relabel configurations
-    metric_relabel_configs:
-      - action: replace
-        regex: (.*)
-        replacement: $1
-        source_labels:
-          - __meta_kubernetes_pod_node_name
-        target_label: kubernetes_node
-      - action: replace
-        source_labels:
-          - node
-        target_label: instance
+    # metric_relabel_configs:
+    #   - action: replace
+    #     regex: (.*)
+    #     replacement: $1
+    #     source_labels:
+    #       - __meta_kubernetes_pod_node_name
+    #     target_label: kubernetes_node
+    #   - action: replace
+    #     source_labels:
+    #       - node
+    #     target_label: instance
 
     static_configs:
       - targets: ['locationapi:80']

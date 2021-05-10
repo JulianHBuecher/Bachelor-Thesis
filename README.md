@@ -37,5 +37,6 @@ Bei erfolgreicher Implementierung des Intrusion Detection bzw. Prevention System
 - "Adding ML.NET to your Web APIs", .NET Live [Video](https://www.youtube.com/watch?v=THVD4nzi8vk)
 - Fortführende Dokumentation zu ML.NET bei [Microsoft Learn](https://dotnet.microsoft.com/learn/ml-dotnet)
 - Weitere [.NET Community Standups](https://dotnet.microsoft.com/live/community-standupPer) zum Thema ML.NET
+- Metriken aus dem NGINX auslesen von [hier](https://www.datadoghq.com/blog/how-to-collect-nginx-metrics/)
 <br> <br>
 [back to TOC](#inhaltsverzeichnis)
