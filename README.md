@@ -3,7 +3,7 @@
 - [Motivation](#motivation)
 - [Architektur](#architektur)
 - [Ziel](#ziel)
-- [Links](#links)
+  - [Links](#links)
 
 
 ## Motivation
@@ -32,7 +32,10 @@ Bei erfolgreicher Implementierung des Intrusion Detection bzw. Prevention System
 
 ### Links
 - Prometheus Konfiguration für Docker-Compose aus dem aktuellen [Repo](https://github.com/vegasbrianc/prometheus/blob/master/docker-compose.yml)
-- Angular OAuth OIDC Package Konfiguration aus dem aktuellen [Repo](https://github.com/damienbod/angular-auth-oidc-client) <br> <br>
+- Angular OAuth OIDC Package Konfiguration aus dem aktuellen [Repo](https://github.com/damienbod/angular-auth-oidc-client) 
 - Konfiguration für das Grafana Dashboard von [hier](https://dale-bingham-cingulara.medium.com/net-core-web-api-metrics-with-prometheus-and-grafana-fe84a52d9843)
-
+- "Adding ML.NET to your Web APIs", .NET Live [Video](https://www.youtube.com/watch?v=THVD4nzi8vk)
+- Fortführende Dokumentation zu ML.NET bei [Microsoft Learn](https://dotnet.microsoft.com/learn/ml-dotnet)
+- Weitere [.NET Community Standups](https://dotnet.microsoft.com/live/community-standupPer) zum Thema ML.NET
+<br> <br>
 [back to TOC](#inhaltsverzeichnis)
