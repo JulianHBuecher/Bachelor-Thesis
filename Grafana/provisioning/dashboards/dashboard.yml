@@ -7,5 +7,6 @@ providers:
   type: file
   disableDeletion: false
   editable: true
+  updateIntervalSeconds: 10 # Scanning for changed dashboards
   options:
     path: /etc/grafana/provisioning/dashboards

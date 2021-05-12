@@ -5,7 +5,7 @@ deletedDatasources:
   - name: Prometheus
     orgId: 1
 
-# list of datasources to insert/ipdated depending
+# list of datasources to insert/updated depending
 # whats avaliable in the database
 datasources:
     # Name of the datasource (req)
