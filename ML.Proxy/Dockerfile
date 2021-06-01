@@ -5,13 +5,13 @@ WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY *.csproj ./
-RUN dotnet restore "WeatherApi.csproj"
+RUN dotnet restore "ML.Proxy.csproj"
 
 # copy everything else and build app
 COPY . ./
-RUN dotnet publish "WeatherApi.csproj" -c Release -o out
+RUN dotnet publish "ML.Proxy.csproj" -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
-ENTRYPOINT ["dotnet", "WeatherApi.dll"]
+ENTRYPOINT ["dotnet", "ML.Proxy.dll"]

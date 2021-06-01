@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0.300-buster-slim AS build
 RUN apt-get update && apt-get install -y locales
 
 WORKDIR /app

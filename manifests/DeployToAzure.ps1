@@ -36,20 +36,19 @@ function Install() {
     Write-Output "`n`nInstallation of Nginx Ingress: "
 
     helm install nginx-ingress ingress-nginx/ingress-nginx `
-    --namespace backend-for-frontend `
+    --namespace jb-thesis-project `
     --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux `
     --set controller.replicaCount=1 `
     --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux `
     --set controller.service.loadBalancerIP="20.52.19.16" `
     --set controller.service.externalTrafficPolicy=Local `
     --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"="jb-thesis-project"
-    # TODO: Ändern der DNS labels
     
     Start-Sleep -s 10
     Write-Output "`n`nInstallation of Cert Manager: "
     
     helm install cert-manager `
-      --namespace backend-for-frontend `
+      --namespace jb-thesis-project `
       --version v0.16.1 `
       --set installCRDs=true `
       --set nodeSelector."beta\.kubernetes\.io/os"=linux `
@@ -75,6 +74,7 @@ function Install() {
     kubectl apply -f .\identityserver-deployment.yml &&
     kubectl apply -f .\weatherapi-deployment.yml &&
     kubectl apply -f .\locationapi-deployment.yml &&
+    kubectl apply -f .\ml.proxy-deployment.yml &&
     kubectl apply -f .\elasticsearch-kibana-deployment.yml &&
     kubectl apply -f .\prometheus-deployment.yml &&
     kubectl apply -f .\grafana-deployment.yml

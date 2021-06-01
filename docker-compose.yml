@@ -64,6 +64,21 @@ services:
         deploy:
             restart_policy:
                 condition: on-failure
+    
+    ml.proxy:
+        container_name: ml.proxy
+        build: ./ML.Proxy/.
+        image: jb-thesis-ml.proxy:dev
+        ports:
+            - 80
+        environment: 
+            - ASPNETCORE_URLS=http://+
+            # - ASPNETCORE_ENVIRONMENT=Docker
+        networks:
+            - devnetwork
+        deploy:
+            restart_policy:
+                condition: on-failure
            
     webapp:
         container_name: angular-webapp
@@ -94,6 +109,7 @@ services:
             - webapp
             - weatherapi
             - locationapi
+            - ml.proxy
         deploy:
             restart_policy:
                 condition: on-failure
