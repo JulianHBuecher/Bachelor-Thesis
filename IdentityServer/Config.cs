@@ -93,6 +93,15 @@ namespace IdentityServer
                     
                     AllowedScopes = { "openid", "profile", "weatherdata.read", "locationdata.read" }
                 },
+                // console client for meassuring request time
+                new Client
+                {
+                    ClientId = "Konsolen.Client",
+                    ClientName = "Konsolen Client",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedScopes = { "weatherdata.read" }
+                }
             };
     }
 }

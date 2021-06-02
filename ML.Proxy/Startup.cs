@@ -29,6 +29,17 @@ namespace ML.Proxy
             var proxyBuilder = services.AddReverseProxy();
             // Initializing the reverse proxy (by configuration out of appsettings.json)
             proxyBuilder.LoadFromConfig(Configuration.GetSection("ML.Proxy"));
+            // Adding ThrottlR services for configuring default policy
+            // See: https://github.com/Kahbazi/ThrottlR/tree/release/v2
+            services.AddThrottlR(options =>
+            {
+                // Configuring default policy
+                options.AddDefaultPolicy(policy =>
+                {
+                    // Adding a general rule for all ips
+                    policy.WithGeneralRule(TimeSpan.FromSeconds(10), 3); // 3 requests could be called every 10 seconds
+                });
+            }).AddInMemoryCounterStore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,13 +54,16 @@ namespace ML.Proxy
             // before any routing takes place
             app.UseRouting();
 
+            // Middleware for Throttler regarding throttling incoming requests
+            app.UseThrottler();
+
             // Middleware added between UseRouting() and UseEndpoints() can call HttpContext.GetEndpoint()
             // to check which endpoint routing matched the request to (if any), and use
             // any metadata that was associated with that endpoint
             app.UseEndpoints(endpoints =>
             {
-                // Register Reverse Proxy Routes
-                endpoints.MapReverseProxy();
+                // Register Reverse Proxy Routes and Enable Throttling for these Routes
+                endpoints.MapReverseProxy().Throttle();
             });
         }
     }

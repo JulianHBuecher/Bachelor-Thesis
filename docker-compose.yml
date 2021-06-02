@@ -38,6 +38,7 @@ services:
             - IdentityServer__Audience=weatherdata
             - IdentityServer__ValidIssuers__0=https://reverse.proxy.localhost/identity
             - IdentityServer__ValidIssuers__1=http://identityserver
+            - IdentityServer__ValidIssuers__2=https://localhost/identity
             - IdentityServer__RequireHttpsMetadata=false
         networks:
             - devnetwork
@@ -58,6 +59,7 @@ services:
             - IdentityServer__Audience=locationdata
             - IdentityServer__ValidIssuers__0=https://reverse.proxy.localhost/identity
             - IdentityServer__ValidIssuers__1=http://identityserver
+            - IdentityServer__ValidIssuers__2=https://localhost/identity
             - IdentityServer__RequireHttpsMetadata=false
         networks:
             - devnetwork
