@@ -30,7 +30,7 @@ namespace ML.Proxy
             // Initializing the reverse proxy (by configuration out of appsettings.json)
             proxyBuilder.LoadFromConfig(Configuration.GetSection("ML.Proxy"));
             // Adding ThrottlR services for configuring default policy
-            // See: https://github.com/Kahbazi/ThrottlR/tree/release/v2
+            // See Reference: https://github.com/Kahbazi/ThrottlR/tree/release/v2
             services.AddThrottlR(options =>
             {
                 // Configuring default policy

@@ -69,7 +69,11 @@ services:
     
     ml.proxy:
         container_name: ml.proxy
-        build: ./ML.Proxy/.
+        build:
+            # Build Context handed to Docker Deamon
+            context: .
+            # Specific Dockerfile for Building the App
+            dockerfile: ./ML.Proxy/Dockerfile
         image: jb-thesis-ml.proxy:dev
         ports:
             - 80
