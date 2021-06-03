@@ -37,7 +37,7 @@ namespace ML.Proxy
                 options.AddDefaultPolicy(policy =>
                 {
                     // Adding a general rule for all ips
-                    policy.WithGeneralRule(TimeSpan.FromSeconds(10), 3); // 3 requests could be called every 10 seconds
+                    //policy.WithGeneralRule(TimeSpan.FromSeconds(10), 3); // 3 requests could be called every 10 seconds
                 });
             }).AddInMemoryCounterStore();
         }

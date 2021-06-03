@@ -67,6 +67,8 @@ services:
             restart_policy:
                 condition: on-failure
     
+    # Alternativ, könnte man diesen Proxy vornedran stellen und den NGINX ersetzen
+    # Dann wäre es möglich mittels ML.NET das Identifizieren von DDoS-Attacken zu erkennen
     ml.proxy:
         container_name: ml.proxy
         build:
@@ -81,6 +83,9 @@ services:
             - ASPNETCORE_URLS=http://+
             # - ASPNETCORE_ENVIRONMENT=Docker
         networks:
+            # devnetwork:
+            #     aliases:
+            #         - "reverse.proxy.localhost"
             - devnetwork
         deploy:
             restart_policy:
