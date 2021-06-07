@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ml.proxy-deployment
+  name: ml-proxy-deployment
   namespace: jb-thesis-project
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ml.proxy
+      app: ml-proxy
   template:
     metadata:
       labels:
-        app: ml.proxy
+        app: ml-proxy
     spec:
       containers:
-      - name: ml.proxy
-        image: studentenk8sregistry.azurecr.io/jb-thesis-ml.proxy:v1
+      - name: ml-proxy
+        image: studentenk8sregistry.azurecr.io/jb-thesis-ml.proxy:v1.0
         env:
         - name: ASPNETCORE_URLS
           valueFrom:
@@ -40,7 +40,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ml.proxy
+  name: ml-proxy
 spec:
   type: ClusterIP
   ports:
@@ -48,4 +48,4 @@ spec:
     port: 80
     targetPort: 80
   selector:
-    app: ml.proxy
+    app: ml-proxy

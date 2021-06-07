@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: locationapi
-        image: studentenk8sregistry.azurecr.io/jb-thesis-locationapi:v1
+        image: studentenk8sregistry.azurecr.io/jb-thesis-locationapi:v1.0
         env:
         - name: ASPNETCORE_URLS
           valueFrom:

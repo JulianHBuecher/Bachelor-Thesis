@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-ingress-ingress-nginx-controller
+  name: nginx-ingress-jb-thesis-ingress-nginx-controller
   labels:
     app.kubernetes.io/managed-by: Helm
   annotations:
     meta.helm.sh/release-name: nginx-ingress
-    meta.helm.sh/release-namespace: backend-for-frontend
+    meta.helm.sh/release-namespace: jb-thesis-project
   namespace: jb-thesis-project
 data:
   proxy-http-version: "1.1"
