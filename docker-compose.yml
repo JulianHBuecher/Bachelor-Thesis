@@ -67,17 +67,32 @@ services:
             restart_policy:
                 condition: on-failure
     
+    # Alternativ, könnte man diesen Proxy vornedran stellen und den NGINX ersetzen
+    # Dann wäre es möglich mittels ML.NET das Identifizieren von DDoS-Attacken zu erkennen
     ml.proxy:
         container_name: ml.proxy
-        build: ./ML.Proxy/.
+        build:
+            # Build Context handed to Docker Deamon
+            context: .
+            # Specific Dockerfile for Building the App
+            dockerfile: ./ML.Proxy/Dockerfile
         image: jb-thesis-ml.proxy:dev
         ports:
-            - 80
+            - "80:80"
+            - "443:443"
         environment: 
-            - ASPNETCORE_URLS=http://+
+            - ASPNETCORE_URLS=http://+;https://+
+            - ASPNETCORE_HTTPS_PORT=443
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=changeit
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ML.Proxy.pfx
             # - ASPNETCORE_ENVIRONMENT=Docker
+        volumes: 
+            - ${USERPROFILE}\.aspnet\https\ML.Proxy.pfx+5.p12:/https/ML.Proxy.pfx:ro
         networks:
-            - devnetwork
+            devnetwork:
+                aliases:
+                    - "reverse.proxy.localhost"
+            # - devnetwork
         deploy:
             restart_policy:
                 condition: on-failure
@@ -94,27 +109,27 @@ services:
             restart_policy:
                 condition: on-failure
 
-    reverse-proxy:
-        container_name: reverse-proxy
-        build: ./ReverseProxy/.
-        image: jb-thesis-reverse-proxy:dev
-        ports:
-            - "80:80"
-            - "443:443"
-        networks: 
-            devnetwork:
-                aliases:
-                    - "reverse.proxy.localhost"
-            # - devnetwork
-        depends_on: 
-            - identityserver
-            - webapp
-            - weatherapi
-            - locationapi
-            - ml.proxy
-        deploy:
-            restart_policy:
-                condition: on-failure
+    # reverse-proxy:
+    #     container_name: reverse-proxy
+    #     build: ./ReverseProxy/.
+    #     image: jb-thesis-reverse-proxy:dev
+    #     ports:
+    #         - "80:80"
+    #         - "443:443"
+    #     networks: 
+    #         devnetwork:
+    #             aliases:
+    #                 - "reverse.proxy.localhost"
+    #         # - devnetwork
+    #     depends_on: 
+    #         - identityserver
+    #         - webapp
+    #         - weatherapi
+    #         - locationapi
+    #         - ml.proxy
+    #     deploy:
+    #         restart_policy:
+    #             condition: on-failure
 
     elasticsearch:
         container_name: elasticsearch

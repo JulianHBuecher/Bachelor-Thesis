@@ -19,7 +19,7 @@ spec:
           name: nginx-config
       containers:
       - name: angular-webapp
-        image: studentenk8sregistry.azurecr.io/jb-thesis-angular-webapp:v1
+        image: studentenk8sregistry.azurecr.io/jb-thesis-angular-webapp:v1.0
         volumeMounts:
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
