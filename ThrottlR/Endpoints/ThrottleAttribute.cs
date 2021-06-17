@@ -21,6 +21,8 @@ namespace ThrottlR
             {
                 if (_generalRules == null)
                 {
+                    // lock holds the current threat until the execution of the surrounded code-block
+                    // is finished
                     lock (_lockObject)
                     {
                         var generalRules = new List<ThrottleRule>();

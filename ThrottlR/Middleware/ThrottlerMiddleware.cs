@@ -171,6 +171,13 @@ namespace ThrottlR
             return false;
         }
 
+        /// <summary>
+        /// Blocks the incomming request, if the counter for the specified rule has reached the limit
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <param name="rule"></param>
+        /// <param name="counter"></param>
+        /// <returns></returns>
         private Task ReturnQuotaExceededResponse(HttpContext httpContext, ThrottleRule rule, Counter counter)
         {
             var retryAfter = counter.Timestamp + rule.TimeWindow;

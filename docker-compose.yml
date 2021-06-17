@@ -78,8 +78,9 @@ services:
             dockerfile: ./ML.Proxy/Dockerfile
         image: jb-thesis-ml.proxy:dev
         ports:
-            - "80:80"
-            - "443:443"
+            # - "80:80"
+            # - "443:443"
+            - 80
         environment: 
             - ASPNETCORE_URLS=http://+;https://+
             - ASPNETCORE_HTTPS_PORT=443
@@ -89,10 +90,10 @@ services:
         volumes: 
             - ${USERPROFILE}\.aspnet\https\ML.Proxy.pfx+5.p12:/https/ML.Proxy.pfx:ro
         networks:
-            devnetwork:
-                aliases:
-                    - "reverse.proxy.localhost"
-            # - devnetwork
+            # devnetwork:
+            #     aliases:
+            #         - "reverse.proxy.localhost"
+            - devnetwork
         deploy:
             restart_policy:
                 condition: on-failure
@@ -109,27 +110,27 @@ services:
             restart_policy:
                 condition: on-failure
 
-    # reverse-proxy:
-    #     container_name: reverse-proxy
-    #     build: ./ReverseProxy/.
-    #     image: jb-thesis-reverse-proxy:dev
-    #     ports:
-    #         - "80:80"
-    #         - "443:443"
-    #     networks: 
-    #         devnetwork:
-    #             aliases:
-    #                 - "reverse.proxy.localhost"
-    #         # - devnetwork
-    #     depends_on: 
-    #         - identityserver
-    #         - webapp
-    #         - weatherapi
-    #         - locationapi
-    #         - ml.proxy
-    #     deploy:
-    #         restart_policy:
-    #             condition: on-failure
+    reverse-proxy:
+        container_name: reverse-proxy
+        build: ./ReverseProxy/.
+        image: jb-thesis-reverse-proxy:dev
+        ports:
+            - "80:80"
+            - "443:443"
+        networks: 
+            devnetwork:
+                aliases:
+                    - "reverse.proxy.localhost"
+            # - devnetwork
+        depends_on: 
+            - identityserver
+            - webapp
+            - weatherapi
+            - locationapi
+            - ml.proxy
+        deploy:
+            restart_policy:
+                condition: on-failure
 
     elasticsearch:
         container_name: elasticsearch
