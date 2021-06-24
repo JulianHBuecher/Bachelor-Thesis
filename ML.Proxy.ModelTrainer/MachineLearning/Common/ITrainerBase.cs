@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.ML.Data;
 
 namespace ML.Proxy.ModelTrainer.MachineLearning.Common
 {
-    interface ITrainerBase
+    public interface ITrainerBase
     {
+        string Name { get; }
+        void Fit<TParam>(string trainingFileName);
+        BinaryClassificationMetrics Evaluate();
+        void Save();
     }
 }
