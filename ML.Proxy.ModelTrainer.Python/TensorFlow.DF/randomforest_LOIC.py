@@ -12,6 +12,13 @@ import matplotlib.pyplot as plt
 from IPython.core.magic import register_line_magic
 from IPython.display import Javascript
 
+###############################################################################
+# Random Forest Classification Model (TensorFlow)                             #
+# For LOIC Dataset                                                            #
+# Based on the Implementation of:                                             #
+# https://mljar.com/blog/feature-importance-in-random-forest/                 #
+###############################################################################
+
 data_LOIC = pd.read_csv('../Data/Tuesday-20-02-2018_LOIC-Attack.csv')
 data_LOIC.rename(columns={
     'Bwd Pkt Len Std':'bwd_pkt_len_std',

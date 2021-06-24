@@ -12,6 +12,14 @@ import matplotlib.pyplot as plt
 from IPython.core.magic import register_line_magic
 from IPython.display import Javascript
 
+
+###############################################################################
+# Random Forest Classification Model (TensorFlow)                             #
+# For Slowloris Dataset                                                       #
+# Based on the Implementation of:                                             #
+# https://mljar.com/blog/feature-importance-in-random-forest/                 #
+###############################################################################
+
 data_Slowloris = pd.read_csv('../Data/Thursday-15-02-2018_Slowloris-Attack.csv')
 data_Slowloris.rename(columns={
     'Flow Duration':'flow_duration',

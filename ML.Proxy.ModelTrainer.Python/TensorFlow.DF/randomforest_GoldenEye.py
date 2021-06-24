@@ -12,6 +12,13 @@ import matplotlib.pyplot as plt
 from IPython.core.magic import register_line_magic
 from IPython.display import Javascript
 
+###############################################################################
+# Random Forest Classification Model (TensorFlow)                             #
+# For GoldenEye Dataset                                                       #
+# Based on the Implementation of:                                             #
+# https://mljar.com/blog/feature-importance-in-random-forest/                 #
+###############################################################################
+
 # Checking the version of installed TensorFlow Decision Forest
 print(f"Found TensorFlow Decision Forests v{tfdf.__version__}")
 
