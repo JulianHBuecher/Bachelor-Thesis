@@ -1,6 +1,10 @@
-import pandas as pd
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import tensorflow_decision_forests as tfdf
+import pandas as pd
 import numpy as np
+import tensorflow as tf
+import math
 from wurlitzer import sys_pipes
 import matplotlib.pyplot as plt
 
@@ -14,6 +18,11 @@ print(f"Found TensorFlow Decision Forests v{tfdf.__version__}")
 data_Penguins = pd.read_csv('./Data/penguins.csv')
 
 label = 'species'
+
+classes = data_Penguins[label].unique().tolist()
+print(f"Label classes: {classes}")
+
+data_Penguins[label] = data_Penguins[label].map(classes.index)
 
 def split_dataset(dataset,  test_ratio=0.30):
     """Splits a panda dataframe in two dataframes."""
@@ -48,7 +57,7 @@ for name, value in evaluation.items():
     print(f"{name}: {value:.4f}")
 
 # Saving the Model for later reusage
-model.save("../Models/Penguins_model")
+model.save("./Models/Penguins_model")
 
 # Plotting the first tree of the Decision Forest
 tfdf.model_plotter.plot_model_in_colab(model, tree_idx=0, max_depth=3)
@@ -71,5 +80,5 @@ plt.plot([log.num_trees for log in logs], [log.evaluation.loss for log in logs])
 plt.xlabel("Number of trees")
 plt.ylabel("Logloss (out-of-bag)")
 
-plt.savefig('../Data/Visualized/Penguins_Model.png',bbox_inches="tight")
+plt.savefig('./Data/Visualized/Penguins_Model.png',bbox_inches="tight")
 plt.clf()
