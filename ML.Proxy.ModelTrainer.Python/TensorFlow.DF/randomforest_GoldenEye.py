@@ -1,11 +1,6 @@
 import pandas as pd
-import sklearn as skl
-import tensorflow as tf
 import tensorflow_decision_forests as tfdf
 import numpy as np
-import os
-import tensorflow as tf
-import math
 from wurlitzer import sys_pipes
 import matplotlib.pyplot as plt
 
