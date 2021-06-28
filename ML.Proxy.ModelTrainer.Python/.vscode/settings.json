@@ -1,4 +1,3 @@
 {
-    "python.pythonPath": "C:\\Python38\\python.exe",
-    "python.defaultInterpreterPath": "C:\\Python38\\python.exe"
+    "python.pythonPath": "/usr/bin/python3"
 }
