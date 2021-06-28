@@ -1,5 +1,4 @@
-﻿using Microsoft.ML;
-using Microsoft.ML.Data;
+﻿using Microsoft.ML.Data;
 using ML.Proxy.ModelTrainer.MachineLearning.Common;
 using ML.Proxy.ModelTrainer.MachineLearning.Predictors;
 using ML.Proxy.ModelTrainer.MachineLearning.Trainers;
@@ -18,21 +17,21 @@ namespace ML.Proxy.ModelTrainer
     {
         static void Main(string[] args)
         {
-            //var newSample = new GoldenEyeTrafficData
-            //{
-            //    BwdPktLenStd = 486.0F,
-            //    FlowIATMin = 6,
-            //    FwdIATMin = 316,
-            //    FlowIATMean = 858636.285714286F,
-            //};
-            //var newSample = new SlowlorisTrafficData
-            //{
-            //    FlowDuration = 25737760,
-            //    BwdIATMean = 1671248.85714286F,
-            //    FwdIATMin = 2396,
-            //    FwdIATMean = 1715850.66666667F,
-            //};
-            var newSample = new LOICTrafficData
+            var newSampleGoldenEye = new GoldenEyeTrafficData
+            {
+                BwdPktLenStd = 486.0F,
+                FlowIATMin = 6,
+                FwdIATMin = 316,
+                FlowIATMean = 858636.285714286F,
+            };
+            var newSampleSlowloris = new SlowlorisTrafficData
+            {
+                FlowDuration = 25737760,
+                BwdIATMean = 1671248.85714286F,
+                FwdIATMin = 2396,
+                FwdIATMean = 1715850.66666667F,
+            };
+            var newSampleLOIC = new LOICTrafficData
             {
                 BwdPktLenStd = 482.0F,
                 PktSizeAvg = 140.5714286F,
@@ -49,32 +48,24 @@ namespace ML.Proxy.ModelTrainer
                 new RandomForestTrainer(50,100)
             };
 
-            //trainers.ForEach(t => TrainEvaluatePredict(t, newSample, @"..\..\..\Data\Thursday-15-02-2018_GoldenEye-Attack.csv"));
-            //trainers.ForEach(t => TrainEvaluatePredict(t, newSample, @"..\..\..\Data\Thursday-15-02-2018_Slowloris-Attack.csv"));
-            trainers.ForEach(t => TrainEvaluatePredict(t, newSample, @"..\..\..\Data\Tuesday-20-02-2018_LOIC-Attack.csv"));
+            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleGoldenEye, @"..\..\..\Data\Thursday-15-02-2018_GoldenEye-Attack.csv"));
+            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleSlowloris, @"..\..\..\Data\Thursday-15-02-2018_Slowloris-Attack.csv"));
+            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleLOIC, @"..\..\..\Data\Tuesday-20-02-2018_LOIC-Attack.csv"));
         }
 
         static void TrainEvaluatePredict<T>(ITrainerBase trainer, T newSample, string filePath) where T : class
         {
             Console.WriteLine("*************************************************************");
-            Console.WriteLine($" { trainer.Name } ");
+            Console.WriteLine($" { trainer.Name } for { typeof(T).Name }-Attack");
             Console.WriteLine("*************************************************************");
 
             trainer.Fit<T>($"{filePath}");
 
             var modelMetrics = trainer.Evaluate();
 
-            //Console.WriteLine($"Accuracy: {modelMetrics.Accuracy:0.##}{Environment.NewLine}" +
-            //                  $"F1 Score: {modelMetrics.F1Score:#.##}{Environment.NewLine}" +
-            //                  $"Positive Precision: {modelMetrics.PositivePrecision:#.##}{Environment.NewLine}" +
-            //                  $"Negative Precision: {modelMetrics.NegativePrecision:0.##}{Environment.NewLine}" +
-            //                  $"Positive Recall: {modelMetrics.PositiveRecall:#.##}{Environment.NewLine}" +
-            //                  $"Negative Recall: {modelMetrics.NegativeRecall:#.##}{Environment.NewLine}" +
-            //                  $"Area Under Precision Recall Curve: {modelMetrics.AreaUnderPrecisionRecallCurve:#.##}{Environment.NewLine}");
-
             PrintMetrics(modelMetrics);
 
-            trainer.Save();
+            trainer.Save<T>();
 
             var predictor = new Predictor();
             var prediction = predictor.Predict(newSample);
