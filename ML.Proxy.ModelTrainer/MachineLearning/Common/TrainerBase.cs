@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ML.Proxy.ModelTrainer.MachineLearning.Common
 {
@@ -24,7 +22,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
         public string Name { get; protected set; }
 
         // Path where the model ist stored
-        protected static string ModelPath => Path.Combine(AppContext.BaseDirectory, "classification.mdl");
+        protected static string ModelPath => Path.Combine(AppContext.BaseDirectory, $"classification.mdl");
 
         protected readonly MLContext MlContext;
 
@@ -77,9 +75,17 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
             MlContext.Model.Save(_trainedModel, _dataSplit.TrainSet.Schema, ModelPath);
         }
 
+        public void Save<TParam>()
+        {
+            // Path where the model ist stored
+            var ModelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.mdl");
+
+            MlContext.Model.Save(_trainedModel, _dataSplit.TrainSet.Schema, ModelPath);
+        }
+
         private EstimatorChain<NormalizingTransformer> BuildDataProcessingPipeline<TParam>()
         {
-            List<string> inputColumnNames = new List<string>();
+            var inputColumnNames = new List<string>();
 
             switch (typeof(TParam).Name)
             {

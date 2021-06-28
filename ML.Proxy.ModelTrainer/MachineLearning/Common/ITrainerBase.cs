@@ -8,5 +8,6 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
         void Fit<TParam>(string trainingFileName);
         BinaryClassificationMetrics Evaluate();
         void Save();
+        void Save<TParam>();
     }
 }
