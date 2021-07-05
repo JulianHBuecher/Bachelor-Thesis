@@ -9,5 +9,6 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
         BinaryClassificationMetrics Evaluate();
         void Save();
         void Save<TParam>();
+        void SaveAsOnnx<TParam>();
     }
 }

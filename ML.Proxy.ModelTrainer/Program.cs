@@ -62,6 +62,7 @@ namespace ML.Proxy.ModelTrainer
             var modelMetrics = trainer.Evaluate();
 
             trainer.Save<T>();
+            trainer.SaveAsOnnx<T>();
 
             var predictor = new Predictor();
             var prediction = predictor.Predict(newSample);

@@ -78,9 +78,18 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
         public void Save<TParam>()
         {
             // Path where the model ist stored
-            var ModelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.mdl");
+            var modelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.mdl");
 
-            MlContext.Model.Save(_trainedModel, _dataSplit.TrainSet.Schema, ModelPath);
+            MlContext.Model.Save(_trainedModel, _dataSplit.TrainSet.Schema, modelPath);
+        }
+
+        public void SaveAsOnnx<TParam>()
+        {
+            // Path where the model ist stored
+            using (var modelPath = File.Open(Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.onnx"), FileMode.OpenOrCreate))
+            {
+                MlContext.Model.ConvertToOnnx(_trainedModel, _dataSplit.TrainSet, modelPath);
+            }
         }
 
         private EstimatorChain<NormalizingTransformer> BuildDataProcessingPipeline<TParam>()
