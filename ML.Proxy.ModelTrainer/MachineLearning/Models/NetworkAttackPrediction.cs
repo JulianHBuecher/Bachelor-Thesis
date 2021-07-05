@@ -5,6 +5,6 @@
     /// </summary>
     public class NetworkAttackPrediction
     {
-        public bool PredictLabel { get; set; }
+        public bool PredictedLabel { get; set; }
     }
 }

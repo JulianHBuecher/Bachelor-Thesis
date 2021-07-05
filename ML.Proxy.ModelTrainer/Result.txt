@@ -1,0 +1,288 @@
+*************************************************************
+ Random Forest: 2-5 for GoldenEyeTrafficData-Attack
+*************************************************************
+Accuracy: 0.96
+AUC: 0.84
+F1 Score: 0.00
+Negative Precision: 0.96
+Negative Recall: 1.00
+Positive Precision: 0.00
+Positive Recall: 0.00
+
+TEST POSITIVE RATIO:	0.0398 (12368.0/(12368.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||        0 |   12,368 | 0.0000
+ negative ||        0 |  298,473 | 1.0000
+          ||======================
+Precision ||   0.0000 |   0.9602 |
+
+*************************************************************
+Prediction: False
+*************************************************************
+*************************************************************
+ Random Forest: 5-10 for GoldenEyeTrafficData-Attack
+*************************************************************
+Accuracy: 0.97
+AUC: 0.99
+F1 Score: 0.37
+Negative Precision: 0.97
+Negative Recall: 1.00
+Positive Precision: 1.00
+Positive Recall: 0.23
+
+TEST POSITIVE RATIO:	0.0398 (12368.0/(12368.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||    2,822 |    9,546 | 0.2282
+ negative ||        0 |  298,473 | 1.0000
+          ||======================
+Precision ||   1.0000 |   0.9690 |
+
+*************************************************************
+Prediction: False
+*************************************************************
+*************************************************************
+ Random Forest: 10-20 for GoldenEyeTrafficData-Attack
+*************************************************************
+Accuracy: 0.99
+AUC: 1.00
+F1 Score: 0.88
+Negative Precision: 0.99
+Negative Recall: 1.00
+Positive Precision: 0.96
+Positive Recall: 0.81
+
+TEST POSITIVE RATIO:	0.0398 (12368.0/(12368.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||   10,075 |    2,293 | 0.8146
+ negative ||      414 |  298,059 | 0.9986
+          ||======================
+Precision ||   0.9605 |   0.9924 |
+
+*************************************************************
+Prediction: True
+*************************************************************
+*************************************************************
+ Random Forest: 20-40 for GoldenEyeTrafficData-Attack
+*************************************************************
+Accuracy: 1.00
+AUC: 1.00
+F1 Score: 0.94
+Negative Precision: 1.00
+Negative Recall: 1.00
+Positive Precision: 0.95
+Positive Recall: 0.94
+
+TEST POSITIVE RATIO:	0.0398 (12368.0/(12368.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||   11,567 |      801 | 0.9352
+ negative ||      547 |  297,926 | 0.9982
+          ||======================
+Precision ||   0.9548 |   0.9973 |
+
+*************************************************************
+Prediction: True
+*************************************************************
+*************************************************************
+ Random Forest: 2-5 for SlowlorisTrafficData-Attack
+*************************************************************
+Accuracy: 0.99
+AUC: 0.81
+F1 Score: 0.00
+Negative Precision: 0.99
+Negative Recall: 1.00
+Positive Precision: 0.00
+Positive Recall: 0.00
+
+TEST POSITIVE RATIO:	0.0107 (3216.0/(3216.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||        0 |    3,216 | 0.0000
+ negative ||        0 |  298,473 | 1.0000
+          ||======================
+Precision ||   0.0000 |   0.9893 |
+
+*************************************************************
+Prediction: False
+*************************************************************
+*************************************************************
+ Random Forest: 5-10 for SlowlorisTrafficData-Attack
+*************************************************************
+Accuracy: 1.00
+AUC: 0.94
+F1 Score: 0.75
+Negative Precision: 1.00
+Negative Recall: 1.00
+Positive Precision: 0.99
+Positive Recall: 0.60
+
+TEST POSITIVE RATIO:	0.0107 (3216.0/(3216.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||    1,925 |    1,291 | 0.5986
+ negative ||       25 |  298,448 | 0.9999
+          ||======================
+Precision ||   0.9872 |   0.9957 |
+
+*************************************************************
+Prediction: False
+*************************************************************
+*************************************************************
+ Random Forest: 10-20 for SlowlorisTrafficData-Attack
+*************************************************************
+Accuracy: 1.00
+AUC: 0.95
+F1 Score: 0.90
+Negative Precision: 1.00
+Negative Recall: 1.00
+Positive Precision: 0.98
+Positive Recall: 0.84
+
+TEST POSITIVE RATIO:	0.0107 (3216.0/(3216.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||    2,710 |      506 | 0.8427
+ negative ||       66 |  298,407 | 0.9998
+          ||======================
+Precision ||   0.9762 |   0.9983 |
+
+*************************************************************
+Prediction: False
+*************************************************************
+*************************************************************
+ Random Forest: 20-40 for SlowlorisTrafficData-Attack
+*************************************************************
+Accuracy: 1.00
+AUC: 0.99
+F1 Score: 0.94
+Negative Precision: 1.00
+Negative Recall: 1.00
+Positive Precision: 0.98
+Positive Recall: 0.91
+
+TEST POSITIVE RATIO:	0.0107 (3216.0/(3216.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||    2,922 |      294 | 0.9086
+ negative ||       72 |  298,401 | 0.9998
+          ||======================
+Precision ||   0.9760 |   0.9990 |
+
+*************************************************************
+Prediction: False
+*************************************************************
+*************************************************************
+ Random Forest: 2-5 for LOICTrafficData-Attack
+*************************************************************
+Accuracy: 0.93
+AUC: 0.92
+F1 Score: 0.00
+Negative Precision: 0.93
+Negative Recall: 1.00
+Positive Precision: 0.00
+Positive Recall: 0.00
+
+TEST POSITIVE RATIO:	0.0723 (172398.0/(172398.0+2210636.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||        0 |  172,398 | 0.0000
+ negative ||        0 | 2,210,636 | 1.0000
+          ||======================
+Precision ||   0.0000 |   0.9277 |
+
+*************************************************************
+Prediction: False
+*************************************************************
+*************************************************************
+ Random Forest: 5-10 for LOICTrafficData-Attack
+*************************************************************
+Accuracy: 0.96
+AUC: 0.99
+F1 Score: 0.67
+Negative Precision: 0.96
+Negative Recall: 1.00
+Positive Precision: 1.00
+Positive Recall: 0.50
+
+TEST POSITIVE RATIO:	0.0723 (172398.0/(172398.0+2210636.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||   86,539 |   85,859 | 0.5020
+ negative ||        3 | 2,210,633 | 1.0000
+          ||======================
+Precision ||   1.0000 |   0.9626 |
+
+*************************************************************
+Prediction: True
+*************************************************************
+*************************************************************
+ Random Forest: 10-20 for LOICTrafficData-Attack
+*************************************************************
+Accuracy: 1.00
+AUC: 1.00
+F1 Score: 0.97
+Negative Precision: 1.00
+Negative Recall: 1.00
+Positive Precision: 0.99
+Positive Recall: 0.94
+
+TEST POSITIVE RATIO:	0.0723 (172398.0/(172398.0+2210636.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||  162,779 |    9,619 | 0.9442
+ negative ||    1,900 | 2,208,736 | 0.9991
+          ||======================
+Precision ||   0.9885 |   0.9957 |
+
+*************************************************************
+Prediction: True
+*************************************************************
+*************************************************************
+ Random Forest: 20-40 for LOICTrafficData-Attack
+*************************************************************
+Accuracy: 1.00
+AUC: 1.00
+F1 Score: 0.97
+Negative Precision: 1.00
+Negative Recall: 1.00
+Positive Precision: 0.99
+Positive Recall: 0.96
+
+TEST POSITIVE RATIO:	0.0723 (172398.0/(172398.0+2210636.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||  165,191 |    7,207 | 0.9582
+ negative ||    2,281 | 2,208,355 | 0.9990
+          ||======================
+Precision ||   0.9864 |   0.9967 |
+
+*************************************************************
+Prediction: True
+*************************************************************

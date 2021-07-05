@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML.Data;
 
-namespace ML.Proxy.ModelTrainer.Models
+namespace ML.Proxy.ModelTrainer.MachineLearning.Models
 {
     /// <summary>
     /// Data Model for representing GoldenEye Network Traffic

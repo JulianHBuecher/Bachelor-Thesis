@@ -14,6 +14,20 @@ optimized_data_path = "Optimized"
 plt.rcParams.update({'figure.figsize': (12.0,8.0)})
 plt.rcParams.update({'font.size': 12})
 
+def rename_columns(df: DataFrame):
+    df_columns = df.columns.values.tolist()
+
+    column_dict = { }
+
+    for n in df_columns:
+        old_value = str(n)
+        new_value = old_value.lower()
+        new_value = new_value.replace(" ","_")
+        column_dict[old_value] = new_value
+
+    df.rename(columns=column_dict,inplace=True)
+    return df, column_dict
+
 slowloris_data_path = os.path.join(data_path, 'Thursday-15-02-2018_TrafficForML_CICFlowMeter.csv')
 print("Begin Reading Slowloris Dataset...")
 chunk_df = pd.read_csv(slowloris_data_path, chunksize=100000)
@@ -23,17 +37,7 @@ df = df.drop(df[df.Label == 'DoS attacks-GoldenEye'].index)
 
 df['Label'] = df['Label'].replace({'Benign': 0, 'DoS attacks-Slowloris': 1},value=None)
 
-df_slowloris_columns = df.columns.values.tolist()
-
-column_dict = { }
-
-for n in df_slowloris_columns:
-    old_value = str(n)
-    new_value = old_value.lower()
-    new_value = new_value.replace(" ","_")
-    column_dict[old_value] = new_value
-
-df.rename(columns=column_dict,inplace=True)
+df, column_dict = rename_columns(df)
 
 print("\nWriting optimized file to directory...")
 optimized_slowloris_data_path = os.path.join(data_path, optimized_data_path, 'Thursday-15-02-2018_Slowloris-Attack.csv')

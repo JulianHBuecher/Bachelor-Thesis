@@ -13,6 +13,20 @@ optimized_data_path = "Optimized"
 plt.rcParams.update({'figure.figsize': (12.0,8.0)})
 plt.rcParams.update({'font.size': 12})
 
+def rename_columns(df: DataFrame):
+    df_columns = df.columns.values.tolist()
+
+    column_dict = { }
+
+    for n in df_columns:
+        old_value = str(n)
+        new_value = old_value.lower()
+        new_value = new_value.replace(" ","_")
+        column_dict[old_value] = new_value
+
+    df.rename(columns=column_dict,inplace=True)
+    return df, column_dict
+
 loic_data_path = os.path.join(data_path, 'Tuesday-20-02-2018_TrafficForML_CICFlowMeter.csv')
 print("Begin Reading LOIC Dataset...")
 chunk_df = pd.read_csv(loic_data_path, chunksize=100000)
@@ -20,17 +34,7 @@ df = pd.concat(chunk_df)
 
 df['Label'] = df['Label'].replace({'Benign': 0, 'DDoS attacks-LOIC-HTTP': 1},value=None)
 
-df_columns = df.columns.values.tolist()
-
-column_dict = { }
-
-for n in df_columns:
-    old_value = str(n)
-    new_value = old_value.lower()
-    new_value = new_value.replace(" ","_")
-    column_dict[old_value] = new_value
-
-df.rename(columns=column_dict,inplace=True)
+df, column_dict = rename_columns(df)
 
 nan_count = df.isna().sum().sum()
 print(f"Count of NaN in Dataset: {nan_count}")

@@ -23,7 +23,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Predictors
             var predictionEngine = _mlContext.Model
                 .CreatePredictionEngine<T, NetworkAttackPrediction>(_model);
 
-            return predictionEngine.Predict(newSample);        
+            return predictionEngine.Predict(newSample);
         }
 
         private void LoadModel<T>(T newSample)
