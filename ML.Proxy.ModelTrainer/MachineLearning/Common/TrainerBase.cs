@@ -22,7 +22,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
         public string Name { get; protected set; }
 
         // Path where the model ist stored
-        protected static string ModelPath => Path.Combine(AppContext.BaseDirectory, $"classification.mdl");
+        protected static string ModelPath => Path.Combine(AppContext.BaseDirectory, $"classification.zip");
 
         protected readonly MLContext MlContext;
 
@@ -78,7 +78,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
         public void Save<TParam>()
         {
             // Path where the model ist stored
-            var modelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.mdl");
+            var modelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.zip");
 
             MlContext.Model.Save(_trainedModel, _dataSplit.TrainSet.Schema, modelPath);
         }
@@ -86,7 +86,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
         public void SaveAsOnnx<TParam>()
         {
             // Path where the model ist stored
-            using (var modelPath = File.Open(Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.onnx"), FileMode.OpenOrCreate))
+            using (var modelPath = File.Create(Path.Combine(AppContext.BaseDirectory, $"{typeof(TParam).Name}-classification.onnx")))
             {
                 MlContext.Model.ConvertToOnnx(_trainedModel, _dataSplit.TrainSet, modelPath);
             }

@@ -45,7 +45,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Predictors
 
         private void LoadModel<T>(T newSample)
         {
-            var ModelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(T).Name}-classification.mdl");
+            var ModelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(T).Name}-classification.zip");
 
             if (!File.Exists(ModelPath))
             {
