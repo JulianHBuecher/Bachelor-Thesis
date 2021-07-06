@@ -6,6 +6,7 @@ using ML.Proxy.ModelTrainer.MachineLearning.Trainers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 /*
 * ML.NET Random Forest Algorithm Trainer
 * Based on the implementation of:
@@ -48,9 +49,13 @@ namespace ML.Proxy.ModelTrainer
                 new RandomForestTrainer(20,40)
             };
 
-            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleGoldenEye, @"..\..\..\Data\Thursday-15-02-2018_GoldenEye-Attack.csv"));
-            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleSlowloris, @"..\..\..\Data\Thursday-15-02-2018_Slowloris-Attack.csv"));
-            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleLOIC, @"..\..\..\Data\Tuesday-20-02-2018_LOIC-Attack.csv"));
+            //trainers.ForEach(t => TrainEvaluatePredict(t, newSampleGoldenEye, @"..\..\..\Data\Thursday-15-02-2018_GoldenEye-Attack.csv"));
+            //trainers.ForEach(t => TrainEvaluatePredict(t, newSampleSlowloris, @"..\..\..\Data\Thursday-15-02-2018_Slowloris-Attack.csv"));
+            //trainers.ForEach(t => TrainEvaluatePredict(t, newSampleLOIC, @"..\..\..\Data\Tuesday-20-02-2018_LOIC-Attack.csv"));
+
+            LoadAndPredictWithOnnx(newSampleGoldenEye);
+            LoadAndPredictWithOnnx(newSampleSlowloris);
+            LoadAndPredictWithOnnx(newSampleLOIC);
         }
 
         static void TrainEvaluatePredict<T>(ITrainerBase trainer, T newSample, string csvPath) where T : class
@@ -84,6 +89,22 @@ namespace ML.Proxy.ModelTrainer
             }
             
         }
+
+        // Load the ONNX model and make a prediction
+        static void LoadAndPredictWithOnnx<T>(T newSample) where T : class
+        {
+            Console.WriteLine("*************************************************************");
+            Console.WriteLine($" Prediction of ONNX-Model for { typeof(T).Name }-Attack");
+            Console.WriteLine("*************************************************************");
+
+            var predictor = new Predictor();
+            var prediction = predictor.PredictWithOnnx(newSample);
+
+            Console.WriteLine("*************************************************************");
+            Console.WriteLine($"Prediction: {prediction.PredictedLabel.First():#.##}");
+            Console.WriteLine("*************************************************************");
+        }
+
         // Pretty-print BinaryClassificationMetrics objects.
         private static void PrintMetrics<T>(ITrainerBase trainer, T sample, NetworkAttackPrediction prediction, StreamWriter sw, BinaryClassificationMetrics metrics)
         {
