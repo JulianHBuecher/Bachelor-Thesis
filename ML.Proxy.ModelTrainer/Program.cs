@@ -1,9 +1,9 @@
 ﻿using Microsoft.ML.Data;
 using ML.Proxy.ModelTrainer.MachineLearning.Common;
-using ML.Proxy.ModelTrainer.MachineLearning.Models;
-using ML.Proxy.ModelTrainer.MachineLearning.Models.ONNX;
 using ML.Proxy.ModelTrainer.MachineLearning.Predictors;
 using ML.Proxy.ModelTrainer.MachineLearning.Trainers;
+using ML.Proxy.DataModels;
+using ML.Proxy.DataModels.ONNX;
 using System;
 using System.Collections.Generic;
 using System.IO;

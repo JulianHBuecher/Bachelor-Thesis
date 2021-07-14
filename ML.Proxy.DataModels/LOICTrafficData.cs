@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML.Data;
 
-namespace ML.Proxy.ModelTrainer.MachineLearning.Models
+namespace ML.Proxy.DataModels
 {
     /// <summary>
     /// Data Model for Representing LOIC Network Traffic
@@ -17,5 +17,15 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Models
         public float FlowIATStd;
         [LoadColumn(4)]
         public bool Label;
+
+        public LOICTrafficData() { }
+
+        public LOICTrafficData(NetworkAttack attack)
+        {
+            BwdPktLenStd = attack.BwdPktLenStd;
+            PktSizeAvg = attack.PktSizeAvg;
+            FlowDuration = attack.FlowDuration;
+            FlowIATStd = attack.FlowIATStd;
+        }
     }
 }

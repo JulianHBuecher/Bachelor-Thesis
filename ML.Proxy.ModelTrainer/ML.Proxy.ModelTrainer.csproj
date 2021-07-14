@@ -7,12 +7,20 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="27.1.0" />
-    <PackageReference Include="Microsoft.ML" Version="1.5.5" />
+    <PackageReference Include="Microsoft.ML" Version="1.5.5">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
     <PackageReference Include="Microsoft.ML.FastTree" Version="1.5.5" />
     <PackageReference Include="Microsoft.ML.OnnxConverter" Version="0.17.5" />
-    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.8.0" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.8.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
     <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="1.5.5" />
     <PackageReference Include="Microsoft.ML.TimeSeries" Version="1.5.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ML.Proxy.DataModels\ML.Proxy.DataModels.csproj" />
   </ItemGroup>
 
 </Project>

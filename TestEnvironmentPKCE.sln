@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThrottlR", "ThrottlR\Thrott
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThrottlR.Tests", "ThrottlR.Tests\ThrottlR.Tests.csproj", "{FDCA6E43-8494-41E6-B1AF-0E42E17600B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ML.Proxy.ModelTrainer", "ML.Proxy.ModelTrainer\ML.Proxy.ModelTrainer.csproj", "{B54FE011-2793-436B-9FE9-C4B9BB839DB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ML.Proxy.ModelTrainer", "ML.Proxy.ModelTrainer\ML.Proxy.ModelTrainer.csproj", "{B54FE011-2793-436B-9FE9-C4B9BB839DB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ML.Proxy.DataModels", "ML.Proxy.DataModels\ML.Proxy.DataModels.csproj", "{F028A1D3-0E13-4B80-846A-1424F7EC7292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +127,18 @@ Global
 		{B54FE011-2793-436B-9FE9-C4B9BB839DB6}.Release|x64.Build.0 = Release|Any CPU
 		{B54FE011-2793-436B-9FE9-C4B9BB839DB6}.Release|x86.ActiveCfg = Release|Any CPU
 		{B54FE011-2793-436B-9FE9-C4B9BB839DB6}.Release|x86.Build.0 = Release|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Debug|x64.Build.0 = Debug|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Debug|x86.Build.0 = Debug|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Release|x64.ActiveCfg = Release|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Release|x64.Build.0 = Release|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Release|x86.ActiveCfg = Release|Any CPU
+		{F028A1D3-0E13-4B80-846A-1424F7EC7292}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

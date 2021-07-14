@@ -2,11 +2,11 @@
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Transforms;
-using ML.Proxy.ModelTrainer.MachineLearning.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ML.Proxy.DataModels;
 
 namespace ML.Proxy.ModelTrainer.MachineLearning.Common
 {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace ThrottlR
         private readonly IThrottlerService _throttlerService;
         private readonly IThrottlePolicyProvider _throttlePolicyProvider;
         private readonly ThrottleOptions _options;
+        private readonly ThrottleMLOptions _mlOptions;
         private readonly ISystemClock _systemClock;
         private readonly ILogger<ThrottlerMiddleware> _logger;
 
@@ -23,6 +25,7 @@ namespace ThrottlR
            IThrottlerService throttlerService,
            IThrottlePolicyProvider throttlePolicyProvider,
            IOptions<ThrottleOptions> options,
+           IOptions<ThrottleMLOptions> mlOptions,
            ISystemClock systemClock,
            ILogger<ThrottlerMiddleware> logger)
         {
@@ -30,6 +33,7 @@ namespace ThrottlR
             _throttlerService = throttlerService;
             _throttlePolicyProvider = throttlePolicyProvider;
             _options = options.Value;
+            _mlOptions = mlOptions.Value;
             _systemClock = systemClock;
             _logger = logger;
         }
@@ -133,6 +137,17 @@ namespace ThrottlR
                 context.Response.OnStarting(_onResponseStartingDelegate, (longestRule.rule, longestRule.counter, context));
             }
 
+            // Einschätzung, ob es sich um einen Angriff handelt
+            if (context.Request.Headers.TryGetValue("Attack-Prediction-Header", out StringValues prediction) && 
+                Convert.ToBoolean(prediction))
+            {
+                LogDetectedAttack(scope);
+
+                await BlockIncomingAttack(context);
+
+                return;
+            }
+
             await _next.Invoke(context);
         }
 
@@ -208,12 +223,22 @@ namespace ThrottlR
         {
             var remaining = rule.Quota - counter.Count;
             context.Response.Headers["RateLimit-Remaining"] = remaining.ToString();
-
             var limit = $"{counter.Count}, {rule}";
-            context.Response.Headers["RateLimit-Limit"] = limit;
-
+            context.Response.Headers["RateLimit-Limit"] = limit.ToString();
             var reset = counter.Timestamp + rule.TimeWindow;
             context.Response.Headers["RateLimit-Reset"] = reset.ToString();
+        }
+
+        // Ergänzungen für den ML-Service
+        private Task BlockIncomingAttack(HttpContext context)
+        {
+            context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            return _mlOptions.OnAttackOccured(context);
+        }
+
+        private void LogDetectedAttack(string identity)
+        {
+            _logger.LogInformation($"Request with identity `{identity}` has been blocked by machine learning model.");
         }
     }
 }

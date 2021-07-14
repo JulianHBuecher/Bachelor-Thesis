@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML.Data;
 
-namespace ML.Proxy.ModelTrainer.MachineLearning.Models
+namespace ML.Proxy.DataModels
 {
     /// <summary>
     /// Data Model for Representing Slowloris Network Traffic
@@ -17,5 +17,15 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Models
         public float FwdIATMean;
         [LoadColumn(4)]
         public bool Label;
+
+        public SlowlorisTrafficData() { }
+
+        public SlowlorisTrafficData(NetworkAttack attack)
+        {
+            FlowDuration = attack.FlowDuration;
+            BwdIATMean = attack.BwdIATMean;
+            FwdIATMin = attack.FwdIATMin;
+            FwdIATMean = attack.FwdIATMean;
+        }
     }
 }

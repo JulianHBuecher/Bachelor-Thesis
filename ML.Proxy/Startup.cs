@@ -2,7 +2,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.ML;
+using ML.Proxy.DataModels;
+using ML.Proxy.Middleware;
+using ML.Proxy.Services;
+using System;
 
 namespace ML.Proxy
 {
@@ -24,6 +30,28 @@ namespace ML.Proxy
             var proxyBuilder = services.AddReverseProxy();
             // Initializing the reverse proxy (by configuration out of appsettings.json)
             proxyBuilder.LoadFromConfig(Configuration.GetSection("ML.Proxy"));
+
+            // Adding a PredictionEnginePool for loading the model in a thread-safe environment
+            // Laden der ML-Modelle von Remote
+            services.AddPredictionEnginePool<GoldenEyeTrafficData, NetworkAttackPrediction>()
+                .FromUri(
+                    modelName: "GoldenEyeAttackModel",
+                    uri: Configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:GoldenEye:Model-Path"),
+                    period: TimeSpan.FromMinutes(10));
+            services.AddPredictionEnginePool<LOICTrafficData, NetworkAttackPrediction>()
+                .FromUri(
+                    modelName: "LOICAttackModel",
+                    uri: Configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:LOIC:Model-Path"),
+                    period: TimeSpan.FromMinutes(10));
+            services.AddPredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction>()
+                .FromUri(
+                    modelName: "SlowlorisAttackModel",
+                    uri: Configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:Slowloris:Model-Path"),
+                    period: TimeSpan.FromMinutes(10));
+
+            services.TryAddTransient<IRequestProcessingService, RequestProcessingService>();
+            services.TryAddTransient<ICaptureTrafficService, CaptureTrafficService>();
+
             // Adding ThrottlR services for configuring default policy
             // See Reference: https://github.com/Kahbazi/ThrottlR/tree/release/v2
             services.AddThrottlR(options =>
@@ -48,6 +76,9 @@ namespace ML.Proxy
             // Middleware added before UseRouting() will see all requests and can manipulate them
             // before any routing takes place
             app.UseRouting();
+
+            // Middleware for Prediction of Attack
+            app.UseAttackPredictionMiddleware();
 
             // Middleware for Throttler regarding throttling incoming requests
             app.UseThrottler();

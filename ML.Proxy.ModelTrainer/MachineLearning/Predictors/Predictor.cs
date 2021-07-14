@@ -1,11 +1,9 @@
 ﻿using Microsoft.ML;
-using Microsoft.ML.Data;
-using Microsoft.ML.Transforms.Onnx;
-using ML.Proxy.ModelTrainer.MachineLearning.Models;
-using ML.Proxy.ModelTrainer.MachineLearning.Models.ONNX;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ML.Proxy.DataModels;
+using ML.Proxy.DataModels.ONNX;
 
 namespace ML.Proxy.ModelTrainer.MachineLearning.Predictors
 {
@@ -25,7 +23,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Predictors
 
         public NetworkAttackPrediction Predict<T>(T newSample) where T : class
         {
-            LoadModel(newSample);
+            LoadModel<T>();
 
             var predictionEngine = _mlContext.Model
                 .CreatePredictionEngine<T, NetworkAttackPrediction>(_model);
@@ -35,7 +33,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Predictors
 
         public NetworkAttackPredictionOnnxOutput PredictWithOnnx<T>(T newSample) where T : class
         {
-            LoadOnnxModel(newSample);
+            LoadOnnxModel<T>();
 
             var predictionEngine = _mlContext.Model
                 .CreatePredictionEngine<T, NetworkAttackPredictionOnnxOutput>(_model);
@@ -43,7 +41,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Predictors
             return predictionEngine.Predict(newSample);
         }
 
-        private void LoadModel<T>(T newSample)
+        private void LoadModel<T>()
         {
             var ModelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(T).Name}-classification.zip");
 
@@ -63,7 +61,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Predictors
             }
         }
 
-        private void LoadOnnxModel<T>(T newSample) where T : class
+        private void LoadOnnxModel<T>() where T : class
         {
             var ModelPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(T).Name}-classification.onnx");
 

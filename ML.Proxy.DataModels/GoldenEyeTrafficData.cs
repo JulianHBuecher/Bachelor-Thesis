@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML.Data;
 
-namespace ML.Proxy.ModelTrainer.MachineLearning.Models
+namespace ML.Proxy.DataModels
 {
     /// <summary>
     /// Data Model for representing GoldenEye Network Traffic
@@ -18,5 +18,14 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Models
         [LoadColumn(4)]
         public bool Label;
 
+        public GoldenEyeTrafficData() { }
+
+        public GoldenEyeTrafficData(NetworkAttack attack)
+        {
+            BwdPktLenStd = attack.BwdPktLenStd;
+            FlowIATMin = attack.FlowIATMin;
+            FwdIATMin = attack.FwdIATMin;
+            FlowIATMean = attack.FlowIATMean;
+        }
     }
 }

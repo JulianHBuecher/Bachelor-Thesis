@@ -1,4 +1,4 @@
-﻿namespace ML.Proxy.ModelTrainer.MachineLearning.Models.ONNX
+﻿namespace ML.Proxy.DataModels.ONNX
 {
     public class NetworkAttackPredictionOnnxOutput
     {
