@@ -1,13 +1,19 @@
-﻿{
+{
   "profiles": {
     "ML.Proxy": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:443;http://localhost:80",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "https://localhost:443;http://localhost:80"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true,
+      "DockerfileRunArguments": "-p 80:80 -p 443:443"
     }
   }
 }

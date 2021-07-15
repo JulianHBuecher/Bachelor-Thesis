@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0.300-buster-slim AS build
-RUN apt-get update && apt-get install -y locales
+RUN apt-get update && apt-get install -y locales libpcap-dev
 
 WORKDIR /app
 
