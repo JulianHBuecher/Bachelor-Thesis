@@ -31,6 +31,8 @@ namespace ML.Proxy
             // Initializing the reverse proxy (by configuration out of appsettings.json)
             proxyBuilder.LoadFromConfig(Configuration.GetSection("ML.Proxy"));
 
+            services.AddDistributedMemoryCache();
+
             // Adding a PredictionEnginePool for loading the model in a thread-safe environment
             // Laden der ML-Modelle von Remote
             services.AddPredictionEnginePool<GoldenEyeTrafficData, NetworkAttackPrediction>()

@@ -1,7 +1,9 @@
-﻿namespace ML.Proxy.Services
+﻿using SharpPcap;
+
+namespace ML.Proxy.Services
 {
     public interface ICaptureTrafficService
     {
-        public void CaptureTraffic();
+        public RawCapture? CaptureTraffic();
     }
 }

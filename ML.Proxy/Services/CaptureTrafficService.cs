@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using PacketDotNet;
-using Serilog;
 using SharpPcap;
 using SharpPcap.LibPcap;
 using System;
-using System.IO;
 using System.Linq;
 
 namespace ML.Proxy.Services
@@ -18,7 +15,7 @@ namespace ML.Proxy.Services
             _logger = logger;
         }
 
-        public void CaptureTraffic()
+        public RawCapture? CaptureTraffic()
         {
             var ver = Pcap.SharpPcapVersion;
             _logger.LogInformation($"ML.Proxy is using SharpPcap {ver}");
@@ -28,7 +25,7 @@ namespace ML.Proxy.Services
             if (devices.Count < 1)
             {
                 _logger.LogError("No devices were found on this machine!");
-                return;
+                return null;
             }
             else
             {
@@ -54,23 +51,29 @@ namespace ML.Proxy.Services
                     .Where(d => d.Interface.FriendlyName != null 
                         && d.Interface.FriendlyName.Equals(networkInterface))
                     .Select(d => d)
-                    .First();
+                    .FirstOrDefault();
 
-                _logger.LogInformation($"Device for Capturing found: {device.Interface.FriendlyName}");
+                if (device is not null)
+                {
+                    _logger.LogInformation($"Device for Capturing found: {device.Interface.FriendlyName}");
+                }
 
                 var readTimeoutMilliseconds = 500;
 
                 // Öffnen des Netzwerkinterfaces für das Abhören des Traffics
-                device.Open(new DeviceConfiguration { ReadTimeout = readTimeoutMilliseconds });
+                device.Open(new DeviceConfiguration 
+                { 
+                    Mode = DeviceModes.Promiscuous, 
+                    ReadTimeout = readTimeoutMilliseconds 
+                });
 
-                var rawCapture = device.GetNextPacket(out var p);
 
-                var time = p.Header.Timeval.Date;
-                var len = p.Data.Length;
-                var packet = p.GetPacket();
-
-                var processedPacket = Packet.ParsePacket(packet.LinkLayerType, packet.Data);
-
+                var rawCapture = device.GetNextPacket(out var cPacket);
+                
+                var time = cPacket.Header.Timeval.Date;
+                var len = cPacket.Data.Length;
+                var packet = cPacket.GetPacket();
+                
                 _logger.LogInformation($"{time.Hour}:{time.Minute}:{time.Second}:{time.Millisecond} Len={len}");
                 _logger.LogInformation(packet.ToString());
 
@@ -78,10 +81,13 @@ namespace ML.Proxy.Services
 
                 // Schließen des Netzwerkinterfaces
                 device.Close();
+
+                return packet;
             }
             catch (Exception e)
             {
                 _logger.LogError($"Problem occured by using network interface: \n{e}");
+                return null;
             }
         }
     }

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using ML.Proxy.DataModels;
+using PacketDotNet;
+using SharpPcap;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ML.Proxy.Services
 {
@@ -16,14 +15,32 @@ namespace ML.Proxy.Services
             _logger = logger;
         }
 
-        public async Task<T> TransformRequest<T>(HttpRequest request) where T : class, new()
+        public (T1, T2, T3) Transform<T1, T2, T3>(DateTime timestamp, RawCapture request) 
+            where T1 : class, new()
+            where T2 : class, new()
+            where T3 : class, new()
         {
-            // Implementierung einer Methode zur Konvertierung eines HttpRequests in das gewünschte Format
-            var payloadSize = request.Body.Length;
 
-            T transformedRequest = new T();
+            var packet = Packet.ParsePacket(request.LinkLayerType, request.Data);
 
-            return transformedRequest;
+            var networkAttack = new NetworkAttack()
+            {
+                BwdPktLenStd = 0,
+                FlowIATMin   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
+                FwdIATMin    = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
+                FlowIATMean  = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
+                PktSizeAvg   = request.PacketLength,
+                FlowDuration = (float)(timestamp - request.Timeval.Date).TotalMilliseconds,
+                FlowIATStd   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
+                BwdIATMean   = 0,
+                FwdIATMean   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds
+            };
+
+            return (
+                new GoldenEyeTrafficData(networkAttack) as T1, 
+                new LOICTrafficData(networkAttack) as T2, 
+                new SlowlorisTrafficData(networkAttack) as T3
+                );
         }
     }
 }
