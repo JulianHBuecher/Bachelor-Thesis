@@ -18,3 +18,9 @@ data:
   BasepathConfig__ProxyHeader: X-Forwarded-For
   BasepathConfig__InternalBasePath: /
   BasepathConfig__ProxyBasePath: /identity
+  ML.Proxy.ML-Modell__ZIP__GoldenEye__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ZIP/GoldenEyeTrafficData-classification.zip
+  ML.Proxy.ML-Modell__ZIP__LOIC__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ZIP/LOICTrafficData-classification.zip
+  ML.Proxy.ML-Modell__ZIP__Slowloris__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ZIP/SlowlorisTrafficData-classification.zip
+  ML.Proxy.ML-Modell__ONNX__GoldenEye__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/GoldenEyeTrafficData-classification.onnx
+  ML.Proxy.ML-Modell__ONNX__LOIC__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/LOICTrafficData-classification.onnx
+  ML.Proxy.ML-Modell__ONNX__Slowloris__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/SlowlorisTrafficData-classification.onnx

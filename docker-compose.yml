@@ -75,25 +75,28 @@ services:
             # Build Context handed to Docker Deamon
             context: .
             # Specific Dockerfile for Building the App
-            dockerfile: ./ML.Proxy/Dockerfile
+            dockerfile: ./ML.Proxy/Dockerfile.Production
         image: jb-thesis-ml.proxy:dev
         ports:
-            # - "80:80"
-            # - "443:443"
             - 80
         environment: 
             - ASPNETCORE_URLS=http://+;https://+
             - ASPNETCORE_HTTPS_PORT=443
             - ASPNETCORE_Kestrel__Certificates__Default__Password=changeit
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ML.Proxy.pfx
+            - ML.Proxy.ML-Modell__ZIP__GoldenEye__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ZIP/GoldenEyeTrafficData-classification.zip
+            - ML.Proxy.ML-Modell__ZIP__LOIC__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ZIP/LOICTrafficData-classification.zip
+            - ML.Proxy.ML-Modell__ZIP__Slowloris__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ZIP/SlowlorisTrafficData-classification.zip
+            - ML.Proxy.ML-Modell__ONNX__GoldenEye__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/GoldenEyeTrafficData-classification.onnx
+            - ML.Proxy.ML-Modell__ONNX__LOIC__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/LOICTrafficData-classification.onnx
+            - ML.Proxy.ML-Modell__ONNX__Slowloris__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/SlowlorisTrafficData-classification.onnx
             # - ASPNETCORE_ENVIRONMENT=Docker
         volumes: 
             - ${USERPROFILE}\.aspnet\https\ML.Proxy.pfx+5.p12:/https/ML.Proxy.pfx:ro
         networks:
-            # devnetwork:
-            #     aliases:
-            #         - "reverse.proxy.localhost"
             - devnetwork
+        depends_on: 
+            - redis-requestcache
         deploy:
             restart_policy:
                 condition: on-failure
@@ -195,7 +198,21 @@ services:
             - devnetwork
         restart: always
 
-    
+        
+    redis-requestcache:
+        container_name: redis-requestcache
+        image: redis:latest
+        volumes:
+            - ./Redis/Conf:/usr/local/etc/redis
+            - redis_data:/data
+        ports:
+            - 6379:6379
+        networks:
+            - devnetwork
+        deploy:
+            restart_policy:
+                condition: on-failure
+
 networks: 
     devnetwork:
         driver: bridge
@@ -204,3 +221,4 @@ volumes:
     elasticsearch_data: {}
     prometheus_data: {}
     grafana_data: {}
+    redis_data: {}

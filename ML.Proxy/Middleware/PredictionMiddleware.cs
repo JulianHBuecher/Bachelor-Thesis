@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ML;
 using ML.Proxy.DataModels;
+using ML.Proxy.Models;
 using ML.Proxy.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ML.Proxy.Middleware
@@ -22,7 +18,7 @@ namespace ML.Proxy.Middleware
         private readonly PredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction> _slowlorisModel;
         private readonly IRequestProcessingService _transformationService;
         private readonly ICaptureTrafficService _captureService;
-        private readonly IDistributedCache _memoryCache;
+        private readonly IRedisCacheService _cache;
 
 
         public PredictionMiddleware(
@@ -33,7 +29,7 @@ namespace ML.Proxy.Middleware
             PredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction> slowlorisModel,
             IRequestProcessingService transformationService,
             ICaptureTrafficService captureService,
-            IDistributedCache memoryCache
+            IRedisCacheService cache
             ) 
         {
             _logger = logger;
@@ -43,7 +39,7 @@ namespace ML.Proxy.Middleware
             _slowlorisModel = slowlorisModel;
             _transformationService = transformationService;
             _captureService = captureService;
-            _memoryCache = memoryCache;
+            _cache = cache;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -63,19 +59,14 @@ namespace ML.Proxy.Middleware
 
                 try
                 {
-                    var lastPacketTimeStamp = await _memoryCache.GetAsync(cacheKey);
+                    var lastPacketTimeStamp = _cache.Get<RawPacketCapture>(cacheKey);
                     if (lastPacketTimeStamp is not null)
                     {
-                        timestamp = DateTime.Parse(Encoding.UTF8.GetString(lastPacketTimeStamp));
+                        timestamp = lastPacketTimeStamp.Timeval.Date;
                     }
                     else
                     {
-                        await _memoryCache.SetAsync(cacheKey, Encoding.UTF8.GetBytes(packet.Timeval.Date.ToString()),
-                            new DistributedCacheEntryOptions 
-                            { 
-                                SlidingExpiration = TimeSpan.FromSeconds(10),
-                                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20)
-                            });
+                        _cache.Set(cacheKey, packet);
                     }
                 }
                 catch(Exception e)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ML.Proxy.Models;
 using SharpPcap;
 using SharpPcap.LibPcap;
 using System;
@@ -15,7 +16,7 @@ namespace ML.Proxy.Services
             _logger = logger;
         }
 
-        public RawCapture? CaptureTraffic()
+        public RawPacketCapture? CaptureTraffic()
         {
             var ver = Pcap.SharpPcapVersion;
             _logger.LogInformation($"ML.Proxy is using SharpPcap {ver}");
@@ -80,9 +81,16 @@ namespace ML.Proxy.Services
                 _logger.LogInformation(device.Statistics.ToString());
 
                 // Schließen des Netzwerkinterfaces
-                device.Close();
+                // In der Docker-Linux-Umgebung muss das Interface geöffnet bleiben,
+                // ansonsten werden nachfolgende Requests erst nach erneutem Öffnen des
+                // Interfaces geöffnet
+                if (!OperatingSystem.IsLinux())
+                {
+                    device.Close();
+                }
 
-                return packet;
+
+                return new RawPacketCapture(packet);
             }
             catch (Exception e)
             {

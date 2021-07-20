@@ -14,11 +14,13 @@ namespace ML.Proxy
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _hostEnvironment = hostEnvironment;
         }
 
 
@@ -29,30 +31,42 @@ namespace ML.Proxy
             // Adding the proxy funtions to the app
             var proxyBuilder = services.AddReverseProxy();
             // Initializing the reverse proxy (by configuration out of appsettings.json)
-            proxyBuilder.LoadFromConfig(Configuration.GetSection("ML.Proxy"));
+            proxyBuilder.LoadFromConfig(_configuration.GetSection("ML.Proxy"));
 
-            services.AddDistributedMemoryCache();
+            if (_hostEnvironment.IsDevelopment())
+            {
+                services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = _configuration.GetValue<string>("Redis:Connection-String");
+                });
+            }
 
             // Adding a PredictionEnginePool for loading the model in a thread-safe environment
             // Laden der ML-Modelle von Remote
             services.AddPredictionEnginePool<GoldenEyeTrafficData, NetworkAttackPrediction>()
                 .FromUri(
                     modelName: "GoldenEyeAttackModel",
-                    uri: Configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:GoldenEye:Model-Path"),
+                    uri: _configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:GoldenEye:Model-Path"),
                     period: TimeSpan.FromMinutes(10));
             services.AddPredictionEnginePool<LOICTrafficData, NetworkAttackPrediction>()
                 .FromUri(
                     modelName: "LOICAttackModel",
-                    uri: Configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:LOIC:Model-Path"),
+                    uri: _configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:LOIC:Model-Path"),
                     period: TimeSpan.FromMinutes(10));
             services.AddPredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction>()
                 .FromUri(
                     modelName: "SlowlorisAttackModel",
-                    uri: Configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:Slowloris:Model-Path"),
+                    uri: _configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:Slowloris:Model-Path"),
                     period: TimeSpan.FromMinutes(10));
 
-            services.TryAddTransient<IRequestProcessingService, RequestProcessingService>();
-            services.TryAddTransient<ICaptureTrafficService, CaptureTrafficService>();
+            services.TryAddSingleton<IRequestProcessingService, RequestProcessingService>();
+            services.TryAddSingleton<ICaptureTrafficService, CaptureTrafficService>();
+            services.TryAddSingleton<IRedisCacheService, RedisCacheService>();
+
 
             // Adding ThrottlR services for configuring default policy
             // See Reference: https://github.com/Kahbazi/ThrottlR/tree/release/v2
