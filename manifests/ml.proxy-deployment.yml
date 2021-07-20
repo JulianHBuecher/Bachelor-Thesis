@@ -15,18 +15,10 @@ spec:
     spec:
       containers:
       - name: ml-proxy
-        image: studentenk8sregistry.azurecr.io/jb-thesis-ml.proxy:v1.0
+        image: studentenk8sregistry.azurecr.io/jb-thesis-ml.proxy:v2.1
         env:
-        - name: ASPNETCORE_URLS
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: ASPNETCORE_URLS
-        - name: ASPNETCORE_ENVIRONMENT
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: ASPNETCORE_ENVIRONMENT
+        - name: Serilog__Properties__Application
+          value: JB.Thesis.ML.Proxy
         resources:
           limits:
             cpu: 500m
@@ -36,11 +28,17 @@ spec:
             memory: 64Mi
         ports:
         - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: jb-thesis-project-configmap
+        - configMapRef:
+            name: ml-proxy
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ml-proxy
+  namespace: jb-thesis-project
 spec:
   type: ClusterIP
   ports:

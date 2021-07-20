@@ -27,17 +27,17 @@ namespace ML.Proxy.Services
             var networkAttack = new NetworkAttack()
             {
                 BwdPktLenStd = 0,
-                FlowIATMin   = (float)(request.Timeval.Date - timestamp).TotalSeconds,
-                FwdIATMin    = (float)(request.Timeval.Date - timestamp).TotalSeconds,
-                FlowIATMean  = (float)(request.Timeval.Date - timestamp).TotalSeconds,
+                FlowIATMin   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
+                FwdIATMin    = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
+                FlowIATMean  = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
                 //PktSizeAvg   = request.PacketLength,
                 // Hier könnten noch die Anzahl der bisherigen eingegangenen Pakete dividiert werden.
                 // Diese könnten im Redis Cache vorgehalten werden
                 PktSizeAvg = packet.PayloadPacket.Bytes.Length,
-                FlowDuration = (float)(timestamp - request.Timeval.Date).TotalSeconds,
-                FlowIATStd   = (float)(request.Timeval.Date - timestamp).TotalSeconds,
+                FlowDuration = (float)(timestamp - request.Timeval.Date).TotalMilliseconds,
+                FlowIATStd   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
                 BwdIATMean   = 0,
-                FwdIATMean   = (float)(request.Timeval.Date - timestamp).TotalSeconds
+                FwdIATMean   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds
             };
             
             return (

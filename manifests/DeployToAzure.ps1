@@ -51,7 +51,9 @@ function Install() {
     kubectl apply -f .\webapp-configmap.yml &&
     kubectl apply -f .\prometheus-config.yml &&
     kubectl apply -f .\grafana-config.yml &&
-    kubectl apply -f .\project-configmap.yml
+    kubectl apply -f .\project-configmap.yml &&
+    kubectl apply -f .\redis-config.yml &&
+    kubectl apply -f .\ml.proxy-configmap.yml
 
     Start-Sleep -s 5
     Write-Output "`n`nInstallation of Applications: "
@@ -60,6 +62,7 @@ function Install() {
     kubectl apply -f .\identityserver-deployment.yml &&
     kubectl apply -f .\weatherapi-deployment.yml &&
     kubectl apply -f .\locationapi-deployment.yml &&
+    kubectl apply -f .\redis-deployment.yml &&
     kubectl apply -f .\ml.proxy-deployment.yml &&
     kubectl apply -f .\elasticsearch-kibana-deployment.yml &&
     kubectl apply -f .\prometheus-deployment.yml &&

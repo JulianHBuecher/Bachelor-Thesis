@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-requestcache
+  namespace: jb-thesis-project
+spec:
+  selector:
+    matchLabels:
+      app: redis-requestcache
+  template:
+    metadata:
+      labels:
+        app: redis-requestcache
+    spec:
+      containers:
+      - name: redis-requestcache
+        image: redis:latest
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+          - mountPath: /data
+            name: data
+          - mountPath: /usr/local/etc/redis
+            name: conf
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: conf
+          configMap:
+            name: redis-config
+            items:
+            - key: redis.conf
+              path: redis.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-requestcache
+  namespace: jb-thesis-project
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 6379
+    targetPort: 6379
+  selector:
+    app: redis-requestcache

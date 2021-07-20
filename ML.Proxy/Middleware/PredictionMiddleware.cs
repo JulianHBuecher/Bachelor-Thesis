@@ -56,16 +56,20 @@ namespace ML.Proxy.Middleware
             }
             else
             {
-
                 try
                 {
-                    var lastPacketTimeStamp = _cache.Get<RawPacketCapture>(cacheKey);
-                    if (lastPacketTimeStamp is not null)
+                    var lastPacket = _cache.Get<RawPacketCapture>(cacheKey);
+                    if (lastPacket is not null)
                     {
-                        timestamp = lastPacketTimeStamp.Timeval.Date;
+                        timestamp = lastPacket.Timeval.Date;
+                        // Hinzufügen des alten letzten Paketes für die Historie
+                        _cache.Update(cacheKey, timestamp.ToString());
+                        // Setzen eines neuen letzten Paketes für die Zeitstempel
+                        _cache.Set(cacheKey, packet);
                     }
                     else
                     {
+                        // Ist kein letztes Paket im Cache, füge ein initiales Paket hinzu
                         _cache.Set(cacheKey, packet);
                     }
                 }

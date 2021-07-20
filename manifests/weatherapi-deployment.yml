@@ -15,40 +15,10 @@ spec:
     spec:
       containers:
       - name: weatherapi
-        image: studentenk8sregistry.azurecr.io/jb-thesis-weatherapi:v1.0
+        image: studentenk8sregistry.azurecr.io/jb-thesis-weatherapi:v2.0
         env:
-        - name: ASPNETCORE_URLS
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: ASPNETCORE_URLS
-        - name: ASPNETCORE_ENVIRONMENT
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: ASPNETCORE_ENVIRONMENT
-        - name: IdentityServer__Authority
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: IdentityServer__Authority
-        - name: IdentityServer__Audience
-          value: weatherdata
-        - name: IdentityServer__ValidIssuers__0
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: IdentityServer__ValidIssuers__0
-        - name: IdentityServer__ValidIssuers__1
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: IdentityServer__ValidIssuers__1
-        - name: IdentityServer__RequireHttpsMetadata
-          valueFrom:
-            configMapKeyRef:
-              name: jb-thesis-project-configmap
-              key: IdentityServer__RequireHttpsMetadata
+        - name: Serilog__Properties__Application
+          value: JB.Thesis.WeatherAPI
         resources:
           limits:
             cpu: 500m
@@ -58,11 +28,15 @@ spec:
             memory: 64Mi
         ports:
         - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: jb-thesis-project-configmap
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: weatherapi
+  namespace: jb-thesis-project
 spec:
   type: ClusterIP
   ports:

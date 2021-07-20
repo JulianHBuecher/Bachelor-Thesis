@@ -2,7 +2,6 @@
 // See LICENSE in the project root for license information.
 
 
-using Duende.IdentityServer;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -89,9 +88,6 @@ namespace IdentityServer
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
-
-            // For Elasticsearch & Kibana
-            app.UseSerilogRequestLogging();
 
             // For Prometheus and Grafana
             app.UseMetricServer();

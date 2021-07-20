@@ -49,11 +49,17 @@ spec:
         #     serviceName: locationapi
         #     servicePort: 80
         #   path: /locationdata/(.*)
-        # - backend:
-        #     serviceName: kibana
-        #     servicePort: 80
-        #   path: /kibana/(.*)
-        # - backend:
-        #     serviceName: grafana
-        #     servicePort: 80
-        #   path: /grafana/(.*)
+        - path: /kibana/(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: kibana
+              port:
+                number: 80
+        - path: /grafana/(.*)
+          pathType: Prefix
+          backend:
+            service: 
+              name: grafana
+              port:
+                number: 80

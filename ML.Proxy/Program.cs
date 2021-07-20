@@ -13,10 +13,17 @@ namespace ML.Proxy
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                })
                 .UseSerilog((ctx, cfg) =>
                 {
                     cfg.ReadFrom.Configuration(ctx.Configuration);
                     cfg.Enrich.WithProperty("EnvironmentName", ctx.HostingEnvironment.EnvironmentName);
+                })
+                .ConfigureAppConfiguration((ctx, cfg) =>
+                {
+                    // Read appsettings.json in Runtime
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

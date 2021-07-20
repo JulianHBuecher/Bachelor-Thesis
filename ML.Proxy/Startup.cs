@@ -8,6 +8,7 @@ using Microsoft.Extensions.ML;
 using ML.Proxy.DataModels;
 using ML.Proxy.Middleware;
 using ML.Proxy.Services;
+using Serilog;
 using System;
 
 namespace ML.Proxy

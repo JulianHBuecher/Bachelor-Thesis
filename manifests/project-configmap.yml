@@ -24,3 +24,16 @@ data:
   ML.Proxy.ML-Modell__ONNX__GoldenEye__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/GoldenEyeTrafficData-classification.onnx
   ML.Proxy.ML-Modell__ONNX__LOIC__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/LOICTrafficData-classification.onnx
   ML.Proxy.ML-Modell__ONNX__Slowloris__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/SlowlorisTrafficData-classification.onnx
+  Serilog__MinimumLevel__Default: Information
+  Serilog__MinimumLevel__Override__Microsoft: Warning
+  Serilog__MinimumLevel__Override__System: Warning
+  Serilog__Using__0: Serilog.Sinks.Console
+  Serilog__WriteTo__0__Args__outputTemplate: "[{Timestamp:HH:mm:ss.ms} {Level:u3}] {ThreadId} {MachineName} {EnvironmentUserName} {Message:lj} <s:{SourceContext}>{NewLine}{Exception}"
+  Serilog__WriteTo__0__Name: Console
+  Serilog__WriteTo__1__Args__indexFormat: logstash-{0:yyyy.MM.dd}
+  Serilog__WriteTo__1__Args__nodeUris: http://elasticsearch:9200
+  Serilog__WriteTo__1__Name: Elasticsearch
+  Serilog__WriteTo__1__Options__0__AutoRegisterTemplate: "true"
+  Redis__Connection-String: redis-requestcache:6379
+
+
