@@ -10,9 +10,8 @@ namespace Konsolen.Client
 {
     class Program
     {
-        private static string baseAddress = "localhost";
-        //private static string baseAddress = "reverse.proxy.localhost";
-        //private static string baseAddress = "jb-thesisproject.ddns.net";
+        //private static string baseAddress = "localhost";
+        private static string baseAddress = "jb-thesisproject.ddns.net";
 
         static async Task Main(string[] args)
         {

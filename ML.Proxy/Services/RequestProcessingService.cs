@@ -2,7 +2,6 @@
 using ML.Proxy.DataModels;
 using ML.Proxy.Models;
 using PacketDotNet;
-using SharpPcap;
 using System;
 
 namespace ML.Proxy.Services
@@ -16,34 +15,35 @@ namespace ML.Proxy.Services
             _logger = logger;
         }
 
-        public (T1, T2, T3) Transform<T1, T2, T3>(DateTime timestamp, RawPacketCapture request) 
-            where T1 : class, new()
-            where T2 : class, new()
-            where T3 : class, new()
+        public (GoldenEyeTrafficData, LOICTrafficData, SlowlorisTrafficData) Transform(
+            DateTime initialTimestamp, 
+            DateTime timestampLastPacket, 
+            RawPacketCapture request) 
         {
 
             var packet = Packet.ParsePacket(request.LinkLayerType, request.Data);
 
+            var actualPacketBinaryTimestamp = request.Timeval.Date.ToBinary();
+            var lastPacketBinaryTimestamp = timestampLastPacket.ToBinary();
+            var initialPacketBinaryTimestamp = initialTimestamp.ToBinary();
+
             var networkAttack = new NetworkAttack()
             {
                 BwdPktLenStd = 0,
-                FlowIATMin   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
-                FwdIATMin    = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
-                FlowIATMean  = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
-                //PktSizeAvg   = request.PacketLength,
-                // Hier könnten noch die Anzahl der bisherigen eingegangenen Pakete dividiert werden.
-                // Diese könnten im Redis Cache vorgehalten werden
-                PktSizeAvg = packet.PayloadPacket.Bytes.Length,
-                FlowDuration = (float)(timestamp - request.Timeval.Date).TotalMilliseconds,
-                FlowIATStd   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds,
+                FlowIATMin   = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
+                FwdIATMin    = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
+                FlowIATMean  = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
+                PktSizeAvg   = packet.PayloadPacket.Bytes.Length,
+                FlowDuration = lastPacketBinaryTimestamp - initialPacketBinaryTimestamp,
+                FlowIATStd   = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
                 BwdIATMean   = 0,
-                FwdIATMean   = (float)(request.Timeval.Date - timestamp).TotalMilliseconds
+                FwdIATMean   = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp
             };
             
             return (
-                new GoldenEyeTrafficData(networkAttack) as T1, 
-                new LOICTrafficData(networkAttack) as T2, 
-                new SlowlorisTrafficData(networkAttack) as T3
+                new GoldenEyeTrafficData(networkAttack),
+                new LOICTrafficData(networkAttack),
+                new SlowlorisTrafficData(networkAttack) 
                 );
         }
     }

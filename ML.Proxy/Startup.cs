@@ -8,8 +8,8 @@ using Microsoft.Extensions.ML;
 using ML.Proxy.DataModels;
 using ML.Proxy.Middleware;
 using ML.Proxy.Services;
-using Serilog;
 using System;
+using System.Threading;
 
 namespace ML.Proxy
 {
@@ -29,12 +29,14 @@ namespace ML.Proxy
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //ThreadPool.SetMinThreads(20, 20);
+
             // Adding the proxy funtions to the app
             var proxyBuilder = services.AddReverseProxy();
             // Initializing the reverse proxy (by configuration out of appsettings.json)
             proxyBuilder.LoadFromConfig(_configuration.GetSection("ML.Proxy"));
 
-            if (_hostEnvironment.IsDevelopment())
+            if (!_hostEnvironment.IsDevelopment())
             {
                 services.AddDistributedMemoryCache();
             }

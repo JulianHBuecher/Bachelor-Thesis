@@ -27,5 +27,10 @@ namespace ML.Proxy.DataModels
             FlowDuration = attack.FlowDuration;
             FlowIATStd = attack.FlowIATStd;
         }
+
+        public override string ToString()
+        {
+            return $"Metrics for LOICTraffic: BwdPktLenStd: {BwdPktLenStd}, PktSizeAvg: {PktSizeAvg}, FlowDuration: {FlowDuration}, FlowIATStd: {FlowIATStd}";
+        }
     }
 }

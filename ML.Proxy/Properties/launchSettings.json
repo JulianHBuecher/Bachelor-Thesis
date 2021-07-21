@@ -13,7 +13,7 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "publishAllPorts": true,
       "useSSL": true,
-      "DockerfileRunArguments": "-p 80:80 -p 443:443"
+      "DockerfileRunArguments": "-p 80:80 -p 443:443 --link redis-cache"
     }
   }
 }

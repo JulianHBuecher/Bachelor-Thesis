@@ -45,7 +45,9 @@ namespace ML.Proxy.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             var cacheKey = "Last-Packet";
+            var initialCacheKey = "First-Packet";
             var timestamp = DateTime.Now;
+            var initialPacketTimestamp = DateTime.Now;
 
             var packet = _captureService.CaptureTraffic();
 
@@ -58,19 +60,22 @@ namespace ML.Proxy.Middleware
             {
                 try
                 {
-                    var lastPacket = _cache.Get<RawPacketCapture>(cacheKey);
+                    var firstPacket = await _cache.GetAsync<RawPacketCapture>(initialCacheKey);
+                    var lastPacket = await _cache.GetAsync<RawPacketCapture>(cacheKey);
                     if (lastPacket is not null)
                     {
                         timestamp = lastPacket.Timeval.Date;
+                        initialPacketTimestamp = firstPacket.Timeval.Date;
                         // Hinzufügen des alten letzten Paketes für die Historie
-                        _cache.Update(cacheKey, timestamp.ToString());
+                        await _cache.UpdateAsync(cacheKey, timestamp.ToString());
                         // Setzen eines neuen letzten Paketes für die Zeitstempel
-                        _cache.Set(cacheKey, packet);
+                        await _cache.SetAsync(cacheKey, packet);
                     }
                     else
                     {
                         // Ist kein letztes Paket im Cache, füge ein initiales Paket hinzu
-                        _cache.Set(cacheKey, packet);
+                        await _cache.SetAsync(initialCacheKey, packet);
+                        await _cache.SetAsync(cacheKey, packet);
                     }
                 }
                 catch(Exception e)
@@ -78,7 +83,9 @@ namespace ML.Proxy.Middleware
                     _logger.LogError($"{e}");
                 }
 
-                var (goldenEyeAttack, loicAttack, slowlorisAttack) = _transformationService.Transform<GoldenEyeTrafficData, LOICTrafficData, SlowlorisTrafficData>(timestamp,packet);
+                var (goldenEyeAttack, loicAttack, slowlorisAttack) = _transformationService.Transform(initialPacketTimestamp,timestamp,packet);
+
+                _logger.LogInformation($"{goldenEyeAttack}\n{loicAttack}\n{slowlorisAttack}");
 
                 var attackPrediction = PredictAttack(_goldenEyeModel, _loicModel, _slowlorisModel, goldenEyeAttack, loicAttack, slowlorisAttack);
 

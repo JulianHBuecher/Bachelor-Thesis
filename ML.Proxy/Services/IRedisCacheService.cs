@@ -9,5 +9,6 @@ namespace ML.Proxy.Services
         public void Update(string key, string newKey);
         public Task<T> GetAsync<T>(string key);
         public Task<T> SetAsync<T>(string key, T value);
+        public Task UpdateAsync(string key, string newKey);
     }
 }

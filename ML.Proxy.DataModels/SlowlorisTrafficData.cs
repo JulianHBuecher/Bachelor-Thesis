@@ -27,5 +27,10 @@ namespace ML.Proxy.DataModels
             FwdIATMin = attack.FwdIATMin;
             FwdIATMean = attack.FwdIATMean;
         }
+
+        public override string ToString()
+        {
+            return $"Metrics for SlowlorisTraffic: FlowDuration: {FlowDuration}, BwdIATMean: {BwdIATMean}, FwdIATMin: {FwdIATMin}, FwdIATMean: {FwdIATMean}";
+        }
     }
 }

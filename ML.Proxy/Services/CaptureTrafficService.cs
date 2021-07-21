@@ -15,23 +15,15 @@ namespace ML.Proxy.Services
         {
             _logger = logger;
         }
-
+#nullable enable
         public RawPacketCapture? CaptureTraffic()
         {
-            var ver = Pcap.SharpPcapVersion;
-            _logger.LogInformation($"ML.Proxy is using SharpPcap {ver}");
-
             var devices = LibPcapLiveDeviceList.Instance;
 
             if (devices.Count < 1)
             {
                 _logger.LogError("No devices were found on this machine!");
                 return null;
-            }
-            else
-            {
-                _logger.LogInformation($"{devices.Count} devices were found.");
-                foreach (var d in devices) { _logger.LogInformation($"Found Device Name: {d.Description}"); }
             }
 
             string networkInterface;
@@ -59,38 +51,39 @@ namespace ML.Proxy.Services
                     _logger.LogInformation($"Device for Capturing found: {device.Interface.FriendlyName}");
                 }
 
-                var readTimeoutMilliseconds = 500;
-
                 // Öffnen des Netzwerkinterfaces für das Abhören des Traffics
                 device.Open(new DeviceConfiguration 
                 { 
                     Mode = DeviceModes.Promiscuous, 
-                    ReadTimeout = readTimeoutMilliseconds 
+                    ReadTimeout = 500 
                 });
-
 
                 var rawCapture = device.GetNextPacket(out var cPacket);
                 
-                var time = cPacket.Header.Timeval.Date;
-                var len = cPacket.Data.Length;
-                var packet = cPacket.GetPacket();
-                
-                _logger.LogInformation($"{time.Hour}:{time.Minute}:{time.Second}:{time.Millisecond} Len={len}");
-                _logger.LogInformation(packet.ToString());
-
-                _logger.LogInformation(device.Statistics.ToString());
-
-                // Schließen des Netzwerkinterfaces
-                // In der Docker-Linux-Umgebung muss das Interface geöffnet bleiben,
-                // ansonsten werden nachfolgende Requests erst nach erneutem Öffnen des
-                // Interfaces geöffnet
-                if (!OperatingSystem.IsLinux())
+                if (cPacket.Header is not null)
                 {
-                    device.Close();
+                    var time = cPacket.Header.Timeval.Date;
+                    var len = cPacket.Data.Length;
+                    var packet = cPacket.GetPacket();
+
+                    _logger.LogInformation($"{time.Hour}:{time.Minute}:{time.Second}:{time.Millisecond} Len={len}");
+                    _logger.LogInformation(packet.ToString());
+
+                    _logger.LogInformation(device.Statistics.ToString());
+
+                    // Schließen des Netzwerkinterfaces
+                    // In der Docker-Linux-Umgebung muss das Interface geöffnet bleiben,
+                    // ansonsten werden nachfolgende Requests erst nach erneutem Öffnen des
+                    // Interfaces geöffnet
+                    if (!OperatingSystem.IsLinux())
+                    {
+                        device.Close();
+                    }
+                    
+                    return new RawPacketCapture(packet);
                 }
 
-
-                return new RawPacketCapture(packet);
+                return null;
             }
             catch (Exception e)
             {

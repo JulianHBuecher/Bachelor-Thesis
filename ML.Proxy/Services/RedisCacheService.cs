@@ -8,6 +8,11 @@ namespace ML.Proxy.Services
     public class RedisCacheService : IRedisCacheService
     {
         private readonly IDistributedCache _cache;
+        private static DistributedCacheEntryOptions _options = new DistributedCacheEntryOptions()
+        {
+            SlidingExpiration = TimeSpan.FromMinutes(3),
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+        };
 
         public RedisCacheService(IDistributedCache cache)
         {
@@ -28,13 +33,7 @@ namespace ML.Proxy.Services
 
         public T Set<T>(string key, T value)
         {
-            var options = new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromSeconds(15),
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20)
-            };
-
-            _cache.SetString(key, JsonConvert.SerializeObject(value), options);
+            _cache.SetString(key, JsonConvert.SerializeObject(value), _options);
 
             return value;
         }
@@ -43,15 +42,14 @@ namespace ML.Proxy.Services
         {
             var value = _cache.GetString(key);
 
-            if(value is not null)
+            if (value is not null)
             {
-                _cache.SetString(newKey, value);
+                _cache.SetString(newKey, value, _options);
             }
             else
             {
                 throw new Exception("Key does not exist in the cache.");
             }
-
         }
 
         public async Task<T> GetAsync<T>(string key)
@@ -68,15 +66,23 @@ namespace ML.Proxy.Services
 
         public async Task<T> SetAsync<T>(string key, T value)
         {
-            var options = new DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromSeconds(15),
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20)
-            };
-
-            await _cache.SetStringAsync(key, JsonConvert.SerializeObject(value), options);
+            await _cache.SetStringAsync(key, JsonConvert.SerializeObject(value), _options);
 
             return value;
+        }
+
+        public async Task UpdateAsync(string key, string newKey)
+        {
+            var value = await _cache.GetStringAsync(key);
+
+            if (value is not null)
+            {
+                await _cache.SetStringAsync(newKey, value, _options);
+            }
+            else
+            {
+                throw new Exception("Key does not exist in the cache.");
+            }
         }
     }
 }

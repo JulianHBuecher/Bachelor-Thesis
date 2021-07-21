@@ -27,5 +27,10 @@ namespace ML.Proxy.DataModels
             FwdIATMin = attack.FwdIATMin;
             FlowIATMean = attack.FlowIATMean;
         }
+
+        public override string ToString()
+        {
+            return $"Metrics for GoldenEyeTraffic: BwdPktLenStd: {BwdPktLenStd}, FlowIATMin: {FlowIATMin}, FwdIATMin: {FwdIATMin}, FlowIATMean: {FlowIATMean}";
+        }
     }
 }
