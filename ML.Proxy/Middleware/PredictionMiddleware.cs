@@ -78,7 +78,7 @@ namespace ML.Proxy.Middleware
                         timestamp = lastPacket.Timeval.Date;
                         initialPacketTimestamp = firstPacket.Timeval.Date;
                         // Hinzufügen des alten letzten Paketes für die Historie
-                        await _cache.UpdateAsync(cacheKey, timestamp.ToString());
+                        await _cache.UpdateAsync(cacheKey, timestamp.ToBinary().ToString());
                         // Setzen eines neuen letzten Paketes für die Zeitstempel
                         await _cache.SetAsync(cacheKey, packet);
                     }

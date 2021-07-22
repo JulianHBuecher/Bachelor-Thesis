@@ -83,6 +83,9 @@ namespace WeatherApi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // For Elasticsearch and Kibana
+            app.UseSerilogRequestLogging();
+
             // For Prometheus and Grafana
             app.UseMetricServer();
             app.UseHttpMetrics();

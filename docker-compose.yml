@@ -123,7 +123,8 @@ services:
             - ML.Proxy.ML-Modell__ONNX__GoldenEye__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/GoldenEyeTrafficData-classification.onnx
             - ML.Proxy.ML-Modell__ONNX__LOIC__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/LOICTrafficData-classification.onnx
             - ML.Proxy.ML-Modell__ONNX__Slowloris__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/SlowlorisTrafficData-classification.onnx
-            - Redis__Connection-String=redis-requestcache:6379
+            # - Redis__Connection-String=redis-requestcache:6379
+            - Redis__Connection-String=redis-requestcache
             - ASPNETCORE_ENVIRONMENT=Docker
             - Serilog__MinimumLevel__Default=Information
             - Serilog__MinimumLevel__Override__Microsoft=Warning

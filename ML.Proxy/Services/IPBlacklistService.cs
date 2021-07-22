@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ML.Proxy.Services
@@ -19,7 +18,9 @@ namespace ML.Proxy.Services
 
         public async Task BlacklistIP(HttpContext context)
         {
-            var ip = GetIPv4Address(context);
+            var ip = GetClientIPAddress(context);
+
+            if (string.IsNullOrEmpty(ip)) { return; }
 
             var value = await _cache.GetAsync<string>($"{_cacheKey}-{ip}");
 
@@ -35,9 +36,13 @@ namespace ML.Proxy.Services
             }
         }
 
-        public async Task<(string IPv4, bool IsBlacklisted)> IsIPBlacklisted(HttpContext context)
+        public async Task<(string IPAddress, bool IsBlacklisted)> IsIPBlacklisted(HttpContext context)
         {
-            var ip = GetIPv4Address(context);
+            var ip = GetClientIPAddress(context);
+
+            if (string.IsNullOrEmpty(ip)) { return default; }
+
+            _logger.LogInformation($"X-Forwarded-Header contains: {ip} and the Remote IP Address is: {ip}");
 
             var value = await _cache.GetAsync<string>($"{_cacheKey}-{ip}");
 
@@ -51,15 +56,17 @@ namespace ML.Proxy.Services
             return (ip, false);
         }
 
-        public static string GetIPv4Address(HttpContext context)
+        public static string GetClientIPAddress(HttpContext context)
         {
-            // Extrahiere die IPv4 Adresse aus dem IPAddress Konstrukt
-            var ipv4 = context.Request.HttpContext.Connection.RemoteIpAddress.ToString()
-                .Replace(":"," ")
-                .Split(" ")
-                .Last();
+            // Extrahiere die Client IP Adresse des Senders aus dem NGINX Header
+            var containsHeaders = context.Request.Headers.TryGetValue("X-Forwarded-For", out var value);
 
-            return ipv4;
+            if (containsHeaders)
+            {
+                return value.ToString();
+            }
+
+            return default;
         }
     }
 }

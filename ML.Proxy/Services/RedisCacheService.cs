@@ -31,11 +31,9 @@ namespace ML.Proxy.Services
             return default;
         }
 
-        public T Set<T>(string key, T value)
+        public void Set<T>(string key, T value)
         {
             _cache.SetString(key, JsonConvert.SerializeObject(value), _options);
-
-            return value;
         }
 
         public void Update(string key, string newKey)
@@ -64,11 +62,9 @@ namespace ML.Proxy.Services
             return default;
         }
 
-        public async Task<T> SetAsync<T>(string key, T value)
+        public async Task SetAsync<T>(string key, T value)
         {
             await _cache.SetStringAsync(key, JsonConvert.SerializeObject(value), _options);
-
-            return value;
         }
 
         public async Task UpdateAsync(string key, string newKey)

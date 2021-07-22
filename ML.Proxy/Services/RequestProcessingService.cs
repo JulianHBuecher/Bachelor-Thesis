@@ -27,17 +27,20 @@ namespace ML.Proxy.Services
             var lastPacketBinaryTimestamp = timestampLastPacket.ToBinary();
             var initialPacketBinaryTimestamp = initialTimestamp.ToBinary();
 
+            var iatCalculation = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp < 0 ? 0 : actualPacketBinaryTimestamp - lastPacketBinaryTimestamp;
+            var flowCalculation = lastPacketBinaryTimestamp - initialPacketBinaryTimestamp < 0 ? 0 : actualPacketBinaryTimestamp - initialPacketBinaryTimestamp;
+            
             var networkAttack = new NetworkAttack()
             {
                 BwdPktLenStd = 0,
-                FlowIATMin   = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
-                FwdIATMin    = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
-                FlowIATMean  = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
+                FlowIATMin   = iatCalculation,
+                FwdIATMin    = iatCalculation,
+                FlowIATMean  = iatCalculation,
                 PktSizeAvg   = packet.PayloadPacket.Bytes.Length,
-                FlowDuration = lastPacketBinaryTimestamp - initialPacketBinaryTimestamp,
-                FlowIATStd   = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp,
+                FlowDuration = flowCalculation,
+                FlowIATStd   = iatCalculation,
                 BwdIATMean   = 0,
-                FwdIATMean   = actualPacketBinaryTimestamp - lastPacketBinaryTimestamp
+                FwdIATMean   = iatCalculation,
             };
             
             return (

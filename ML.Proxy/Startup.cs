@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ML.Proxy.Middleware;
 using ML.Proxy.Services;
+using System;
 
 namespace ML.Proxy
 {
@@ -31,7 +32,7 @@ namespace ML.Proxy
             // Initializing the reverse proxy (by configuration out of appsettings.json)
             proxyBuilder.LoadFromConfig(_configuration.GetSection("ML.Proxy"));
 
-            if (!_hostEnvironment.IsDevelopment())
+            if (_hostEnvironment.IsDevelopment())
             {
                 services.AddDistributedMemoryCache();
             }
@@ -39,7 +40,12 @@ namespace ML.Proxy
             {
                 services.AddStackExchangeRedisCache(options =>
                 {
-                    options.Configuration = _configuration.GetValue<string>("Redis:Connection-String");
+                    //options.Configuration = _configuration.GetValue<string>("Redis:Connection-String");
+                    options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+                    {
+                        EndPoints = { _configuration.GetValue<string>("Redis:Connection-String") },
+                        AbortOnConnectFail = true
+                    };
                 });
             }
 
