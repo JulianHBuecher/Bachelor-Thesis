@@ -382,3 +382,75 @@ Precision ||   0.9790 |   0.9983 |
 *************************************************************
 Prediction: False
 *************************************************************
+*************************************************************
+ Random Forest: 10-20 for GoldenEyeTrafficData-Attack
+*************************************************************
+Accuracy: 0.99
+AUC: 1.00
+F1 Score: 0.88
+Negative Precision: 0.99
+Negative Recall: 1.00
+Positive Precision: 0.96
+Positive Recall: 0.81
+
+TEST POSITIVE RATIO:	0.0398 (12368.0/(12368.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||   10,075 |    2,293 | 0.8146
+ negative ||      414 |  298,059 | 0.9986
+          ||======================
+Precision ||   0.9605 |   0.9924 |
+
+*************************************************************
+Prediction: True
+*************************************************************
+*************************************************************
+ Random Forest: 10-20 for GoldenEyeTrafficData-Attack
+*************************************************************
+Accuracy: 0.99
+AUC: 1.00
+F1 Score: 0.88
+Negative Precision: 0.99
+Negative Recall: 1.00
+Positive Precision: 0.96
+Positive Recall: 0.81
+
+TEST POSITIVE RATIO:	0.0398 (12368.0/(12368.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||   10,075 |    2,293 | 0.8146
+ negative ||      414 |  298,059 | 0.9986
+          ||======================
+Precision ||   0.9605 |   0.9924 |
+
+*************************************************************
+Prediction: True
+*************************************************************
+*************************************************************
+ Random Forest: 10-20 for GoldenEyeTrafficData-Attack
+*************************************************************
+Accuracy: 0.99
+AUC: 1.00
+F1 Score: 0.88
+Negative Precision: 0.99
+Negative Recall: 1.00
+Positive Precision: 0.96
+Positive Recall: 0.81
+
+TEST POSITIVE RATIO:	0.0398 (12368.0/(12368.0+298473.0))
+Confusion table
+          ||======================
+PREDICTED || positive | negative | Recall
+TRUTH     ||======================
+ positive ||   10,075 |    2,293 | 0.8146
+ negative ||      414 |  298,059 | 0.9986
+          ||======================
+Precision ||   0.9605 |   0.9924 |
+
+*************************************************************
+Prediction: True
+*************************************************************

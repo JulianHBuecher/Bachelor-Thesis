@@ -154,19 +154,19 @@ namespace ML.Proxy.ModelTrainer
 
             var trainers = new List<ITrainerBase>
             {
-                new RandomForestTrainer(2,5),
-                new RandomForestTrainer(5,10),
+                //new RandomForestTrainer(2,5),
+                //new RandomForestTrainer(5,10),
                 new RandomForestTrainer(10,20),
-                new RandomForestTrainer(20,40)
+                //new RandomForestTrainer(20,40)
             };
 
             trainers.ForEach(t => TrainEvaluatePredict(t, newSampleGoldenEye, @"..\..\..\Data\Thursday-15-02-2018_GoldenEye-Attack.csv"));
-            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleSlowloris, @"..\..\..\Data\Thursday-15-02-2018_Slowloris-Attack.csv"));
-            trainers.ForEach(t => TrainEvaluatePredict(t, newSampleLOIC, @"..\..\..\Data\Tuesday-20-02-2018_LOIC-Attack.csv"));
+            //trainers.ForEach(t => TrainEvaluatePredict(t, newSampleSlowloris, @"..\..\..\Data\Thursday-15-02-2018_Slowloris-Attack.csv"));
+            //trainers.ForEach(t => TrainEvaluatePredict(t, newSampleLOIC, @"..\..\..\Data\Tuesday-20-02-2018_LOIC-Attack.csv"));
 
             LoadAndPredictWithOnnx(newSamplesGoldenEye);
-            LoadAndPredictWithOnnx(newSamplesSlowloris);
-            LoadAndPredictWithOnnx(newSamplesLOIC);
+            //LoadAndPredictWithOnnx(newSamplesSlowloris);
+            //LoadAndPredictWithOnnx(newSamplesLOIC);
         }
 
         static void TrainEvaluatePredict<T>(ITrainerBase trainer, T newSample, string csvPath) where T : class

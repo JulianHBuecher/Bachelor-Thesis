@@ -4,6 +4,7 @@ namespace ML.Proxy.Services
 {
     public interface ICaptureTrafficService
     {
+#nullable enable
         public RawPacketCapture? CaptureTraffic();
     }
 }

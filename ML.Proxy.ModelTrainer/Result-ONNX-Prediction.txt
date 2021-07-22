@@ -46,3 +46,51 @@
  Prediction of ONNX-Model for LOICTrafficData-Attack Data
  Prediction: False
 *************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: True
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: True
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: True
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************
+*************************************************************
+ Prediction of ONNX-Model for GoldenEyeTrafficData-Attack Data
+ Prediction: False
+*************************************************************

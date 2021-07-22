@@ -19,6 +19,7 @@ namespace ML.Proxy.Middleware
         private readonly IRequestProcessingService _transformationService;
         private readonly ICaptureTrafficService _captureService;
         private readonly IRedisCacheService _cache;
+        private readonly IIPBlacklistService _blacklistService;
 
 
         public PredictionMiddleware(
@@ -29,7 +30,8 @@ namespace ML.Proxy.Middleware
             PredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction> slowlorisModel,
             IRequestProcessingService transformationService,
             ICaptureTrafficService captureService,
-            IRedisCacheService cache
+            IRedisCacheService cache,
+            IIPBlacklistService blacklistService
             ) 
         {
             _logger = logger;
@@ -40,6 +42,7 @@ namespace ML.Proxy.Middleware
             _transformationService = transformationService;
             _captureService = captureService;
             _cache = cache;
+            _blacklistService = blacklistService;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -53,11 +56,19 @@ namespace ML.Proxy.Middleware
 
             if (packet is null)
             {
-                _logger.LogWarning($"No packet is available!");
+                _logger.LogWarning("No packet is available!");
                 await _next.Invoke(context);
             }
             else
             {
+                var potentialAttacker = await _blacklistService.IsIPBlacklisted(context);
+
+                if (potentialAttacker.IsBlacklisted)
+                {
+                    AddPredictedAttackHeader(context, true);
+                    await _next.Invoke(context);
+                }
+
                 try
                 {
                     var firstPacket = await _cache.GetAsync<RawPacketCapture>(initialCacheKey);
@@ -91,16 +102,17 @@ namespace ML.Proxy.Middleware
 
                 if (attackPrediction.IsGoldenEyeAttack || attackPrediction.IsLOICAttack || attackPrediction.IsSlowlorisAttack)
                 {
+                    await _blacklistService.BlacklistIP(context);
                     // Setzen eines Headers, der den eingehenden Request als möglichen Angriff kennzeichnet
                     // Bei true: Handelt es sich um einen Angriff
                     _logger.LogWarning($"Attack predicted: Votage in Consortium:\nGoldenEye: {attackPrediction.IsGoldenEyeAttack}; LOIC: {attackPrediction.IsLOICAttack}; Slowloris: {attackPrediction.IsSlowlorisAttack}");
-                    context.Request.Headers.Add("Attack-Prediction-Header", "true");
+                    AddPredictedAttackHeader(context, true);
                 }
                 else
                 {
                     // Bei false: Wird von Seiten des ML.Proxy nichts unternommen
-                    _logger.LogInformation("Request is not an attack.");
-                    context.Request.Headers.Add("Attack-Prediction-Header", "false");
+                    _logger.LogInformation($"Request is not an attack.");
+                    AddPredictedAttackHeader(context, false);
                 }
 
                 await _next.Invoke(context);
@@ -120,6 +132,25 @@ namespace ML.Proxy.Middleware
             var slowlorisPrediction = slowlorisModel.Predict(modelName: "SlowlorisAttackModel", example: slowlorisAttack);
 
             return (goldenEyePrediction.PredictedLabel, loicPrediction.PredictedLabel, slowlorisPrediction.PredictedLabel);
+        }
+
+        public static void AddPredictedAttackHeader(HttpContext context, bool IsAttack)
+        {
+            var attackHeader = "Attack-Prediction-Header";
+            var attackHeaderAlreadyExists = context.Request.Headers.ContainsKey(attackHeader);
+
+            switch (IsAttack, attackHeaderAlreadyExists)
+            {
+                case (true, false):
+                    context.Request.Headers.Add(attackHeader, "true");
+                    break;
+                case (false, false):
+                    context.Request.Headers.Add(attackHeader, "false");
+                    break;
+                default:
+                    // Header muss nicht hinzugefügt werden
+                    break;
+            }
         }
     }
 }

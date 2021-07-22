@@ -49,38 +49,39 @@ namespace ML.Proxy.Services
                 if (device is not null)
                 {
                     _logger.LogInformation($"Device for Capturing found: {device.Interface.FriendlyName}");
-                }
-
-                // Öffnen des Netzwerkinterfaces für das Abhören des Traffics
-                device.Open(new DeviceConfiguration 
-                { 
-                    Mode = DeviceModes.Promiscuous, 
-                    ReadTimeout = 500 
-                });
-
-                var rawCapture = device.GetNextPacket(out var cPacket);
                 
-                if (cPacket.Header is not null)
-                {
-                    var time = cPacket.Header.Timeval.Date;
-                    var len = cPacket.Data.Length;
-                    var packet = cPacket.GetPacket();
 
-                    _logger.LogInformation($"{time.Hour}:{time.Minute}:{time.Second}:{time.Millisecond} Len={len}");
-                    _logger.LogInformation(packet.ToString());
+                    // Öffnen des Netzwerkinterfaces für das Abhören des Traffics
+                    device.Open(new DeviceConfiguration 
+                    { 
+                        Mode = DeviceModes.Promiscuous, 
+                        ReadTimeout = 500 
+                    });
 
-                    _logger.LogInformation(device.Statistics.ToString());
-
-                    // Schließen des Netzwerkinterfaces
-                    // In der Docker-Linux-Umgebung muss das Interface geöffnet bleiben,
-                    // ansonsten werden nachfolgende Requests erst nach erneutem Öffnen des
-                    // Interfaces geöffnet
-                    if (!OperatingSystem.IsLinux())
+                    var rawCapture = device.GetNextPacket(out var cPacket);
+                
+                    if (cPacket.Header is not null)
                     {
-                        device.Close();
-                    }
+                        var time = cPacket.Header.Timeval.Date;
+                        var len = cPacket.Data.Length;
+                        var packet = cPacket.GetPacket();
+
+                        _logger.LogInformation($"{time.Hour}:{time.Minute}:{time.Second}:{time.Millisecond} Len={len}");
+                        _logger.LogInformation(packet.ToString());
+
+                        _logger.LogInformation(device.Statistics.ToString());
+
+                        // Schließen des Netzwerkinterfaces
+                        // In der Docker-Linux-Umgebung muss das Interface geöffnet bleiben,
+                        // ansonsten werden nachfolgende Requests erst nach erneutem Öffnen des
+                        // Interfaces geöffnet
+                        if (!OperatingSystem.IsLinux())
+                        {
+                            device.Close();
+                        }
                     
-                    return new RawPacketCapture(packet);
+                        return new RawPacketCapture(packet);
+                    }
                 }
 
                 return null;
