@@ -42,8 +42,6 @@ namespace ML.Proxy.Services
 
             if (string.IsNullOrEmpty(ip)) { return default; }
 
-            _logger.LogInformation($"X-Forwarded-Header contains: {ip} and the Remote IP Address is: {ip}");
-
             var value = await _cache.GetAsync<string>($"{_cacheKey}-{ip}");
 
             if (value is not null)

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ML.Proxy.Middleware;
 using ML.Proxy.Services;
-using System;
+using Prometheus;
 
 namespace ML.Proxy
 {
@@ -44,7 +44,8 @@ namespace ML.Proxy
                     options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
                     {
                         EndPoints = { _configuration.GetValue<string>("Redis:Connection-String") },
-                        AbortOnConnectFail = true
+                        AbortOnConnectFail = true,
+                        AsyncTimeout = 10000
                     };
                 });
             }
@@ -77,6 +78,10 @@ namespace ML.Proxy
             // Middleware added before UseRouting() will see all requests and can manipulate them
             // before any routing takes place
             app.UseRouting();
+
+            // For Prometheus and Grafana
+            app.UseMetricServer();
+            app.UseHttpMetrics();
 
             // Middleware for Prediction of Attack
             app.UseAttackPredictionMiddleware();
