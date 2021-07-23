@@ -137,6 +137,9 @@ services:
             - Serilog__WriteTo__1__Args__nodeUris=http://elasticsearch:9200
             - Serilog__WriteTo__1__Name=Elasticsearch
             - Serilog__WriteTo__1__Options__0__AutoRegisterTemplate="true"
+            - Secure-IP-Addresses__0__Kanzlei-Buecher=1.1.1.1
+            - Secure-IP-Addresses__1__Kanzlei-Naujoks=8.8.8.8
+            - Secure-IP-Addresses__2__Kanzlei-Mueller=0.0.0.0
         volumes: 
             - ${USERPROFILE}\.aspnet\https\ML.Proxy.pfx+5.p12:/https/ML.Proxy.pfx:ro
         networks:

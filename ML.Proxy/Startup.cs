@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting;
 using ML.Proxy.Middleware;
 using ML.Proxy.Services;
 using Prometheus;
+using System;
+using System.Linq;
+using ThrottlR;
 
 namespace ML.Proxy
 {
@@ -61,8 +64,13 @@ namespace ML.Proxy
                 // Configuring default policy
                 options.AddDefaultPolicy(policy =>
                 {
-                    // Adding a general rule for all ips
-                    //policy.WithGeneralRule(TimeSpan.FromSeconds(10), 3); // 3 requests could be called every 10 seconds
+                    // Adding a safe list for known customer ips
+                    policy.WithIpResolver()
+                        .SafeList.IP(
+                            _configuration.GetSection("Secure-IP-Addresses")
+                                .GetChildren().Select(ip => ip.GetChildren().Select(safeIp => safeIp.Value).FirstOrDefault())
+                                .ToArray() ?? Array.Empty<string>()
+                                );
                 });
             }).AddInMemoryCounterStore();
         }
