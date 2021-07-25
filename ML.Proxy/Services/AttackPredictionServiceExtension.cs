@@ -31,6 +31,8 @@ namespace ML.Proxy.Services
             services.TryAddSingleton<ICaptureTrafficService, CaptureTrafficService>();
             services.TryAddSingleton<IRedisCacheService, RedisCacheService>();
             services.TryAddSingleton<IIPBlacklistService, IPBlacklistService>();
+            services.TryAddSingleton<IIPSafelistService, IPSafelistService>();
+            services.TryAddSingleton<IPacketService, PacketService>();
         }
     }
 }

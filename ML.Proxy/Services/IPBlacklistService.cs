@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ML.Proxy.Services
@@ -22,15 +24,17 @@ namespace ML.Proxy.Services
 
             if (string.IsNullOrEmpty(ip)) { return; }
 
-            var value = await _cache.GetAsync<string>($"{_cacheKey}-{ip}");
+            var blacklist = await _cache.GetAsync<List<string>>(_cacheKey) ?? new List<string>();
 
-            if (value is not null)
+            if (blacklist.Any() && blacklist.Contains(ip))
             {
                 _logger.LogInformation($"IP-Address {ip} is already on blacklist.");
             }
             else
             {
-                await _cache.SetAsync($"{_cacheKey}-{ip}", ip);
+                blacklist.Add(ip);
+
+                await _cache.SetAsync($"{_cacheKey}", blacklist);
 
                 _logger.LogInformation($"IP-Address {ip} is now on blacklist.");
             }
@@ -42,9 +46,9 @@ namespace ML.Proxy.Services
 
             if (string.IsNullOrEmpty(ip)) { return default; }
 
-            var value = await _cache.GetAsync<string>($"{_cacheKey}-{ip}");
+            var blacklist = await _cache.GetAsync<List<string>>(_cacheKey) ?? new List<string>();
 
-            if (value is not null)
+            if (blacklist.Any() && blacklist.Contains(ip))
             {
                 _logger.LogWarning($"{ip} is blacklisted and regards to potential attacker.");
                 return (ip, true);
@@ -52,6 +56,13 @@ namespace ML.Proxy.Services
 
             _logger.LogInformation($"{ip} is not blacklisted and will be further processed.");
             return (ip, false);
+        }
+
+        public async Task<List<string>> GetBlacklist()
+        {
+            var blacklist = await _cache.GetAsync<List<string>>(_cacheKey) ?? new List<string>();
+
+            return blacklist;
         }
 
         public static string GetClientIPAddress(HttpContext context)

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ml-proxy
-        image: studentenk8sregistry.azurecr.io/jb-thesis-ml.proxy:v3.4
+        image: studentenk8sregistry.azurecr.io/jb-thesis-ml.proxy:v3.5
         env:
         - name: Serilog__Properties__Application
           value: JB.Thesis.ML.Proxy

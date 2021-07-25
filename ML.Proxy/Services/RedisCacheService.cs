@@ -25,7 +25,10 @@ namespace ML.Proxy.Services
 
             if (value is not null)
             {
-                return JsonConvert.DeserializeObject<T>(value);
+                return JsonConvert.DeserializeObject<T>(value, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
             }
 
             return default;
@@ -33,10 +36,14 @@ namespace ML.Proxy.Services
 
         public void Set<T>(string key, T value)
         {
-            _cache.SetString(key, JsonConvert.SerializeObject(value), _options);
+            _cache.SetString(key, JsonConvert.SerializeObject(value, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            }),
+            _options);
         }
 
-        public void Update(string key, string newKey)
+        public void UpdateLabel(string key, string newKey)
         {
             var value = _cache.GetString(key);
 
@@ -50,13 +57,30 @@ namespace ML.Proxy.Services
             }
         }
 
+        public void Remove(string key)
+        {
+            var value = _cache.GetString(key);
+
+            if (value is not null)
+            {
+                _cache.Remove(key);
+            }
+            else
+            {
+                throw new Exception("Key does not exist in the cache.");
+            }
+        }
+
         public async Task<T> GetAsync<T>(string key)
         {
             var value = await _cache.GetStringAsync(key);
 
             if (value is not null)
             {
-                return JsonConvert.DeserializeObject<T>(value);
+                return JsonConvert.DeserializeObject<T>(value, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
             }
 
             return default;
@@ -64,16 +88,33 @@ namespace ML.Proxy.Services
 
         public async Task SetAsync<T>(string key, T value)
         {
-            await _cache.SetStringAsync(key, JsonConvert.SerializeObject(value), _options);
+            await _cache.SetStringAsync(key, JsonConvert.SerializeObject(value, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            }), _options);
         }
 
-        public async Task UpdateAsync(string key, string newKey)
+        public async Task UpdateLabelAsync(string key, string newKey)
         {
             var value = await _cache.GetStringAsync(key);
 
             if (value is not null)
             {
                 await _cache.SetStringAsync(newKey, value, _options);
+            }
+            else
+            {
+                throw new Exception("Key does not exist in the cache.");
+            }
+        }
+
+        public async Task RemoveAsync(string key)
+        {
+            var value = await _cache.GetStringAsync(key);
+
+            if (value is not null)
+            {
+                await _cache.RemoveAsync(key);
             }
             else
             {

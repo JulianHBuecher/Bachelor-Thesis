@@ -29,6 +29,7 @@ namespace ML.Proxy
         public void ConfigureServices(IServiceCollection services)
         {
             //ThreadPool.SetMinThreads(20, 20);
+            services.AddControllers();
 
             // Adding the proxy funtions to the app
             var proxyBuilder = services.AddReverseProxy();
@@ -54,7 +55,6 @@ namespace ML.Proxy
             }
 
             // Adding a PredictionEnginePool for loading the model in a thread-safe environment
-            // Laden der ML-Modelle von Remote
             services.AddMachineLearningAttackPrediction(_configuration);
 
             // Adding ThrottlR services for configuring default policy
@@ -72,7 +72,7 @@ namespace ML.Proxy
                                 .ToArray() ?? Array.Empty<string>()
                                 );
                 });
-            }).AddInMemoryCounterStore();
+            }).AddDistributedCounterStore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,6 +102,7 @@ namespace ML.Proxy
             // any metadata that was associated with that endpoint
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 // Register Reverse Proxy Routes and Enable Throttling for these Routes
                 endpoints.MapReverseProxy().Throttle();
             });

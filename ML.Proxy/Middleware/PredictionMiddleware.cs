@@ -18,8 +18,9 @@ namespace ML.Proxy.Middleware
         private readonly PredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction> _slowlorisModel;
         private readonly IRequestProcessingService _transformationService;
         private readonly ICaptureTrafficService _captureService;
-        private readonly IRedisCacheService _cache;
         private readonly IIPBlacklistService _blacklistService;
+        private readonly IIPSafelistService _safelistService;
+        private readonly IPacketService _packetService;
 
 
         public PredictionMiddleware(
@@ -30,8 +31,9 @@ namespace ML.Proxy.Middleware
             PredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction> slowlorisModel,
             IRequestProcessingService transformationService,
             ICaptureTrafficService captureService,
-            IRedisCacheService cache,
-            IIPBlacklistService blacklistService
+            IIPBlacklistService blacklistService,
+            IIPSafelistService safelistService,
+            IPacketService packetService
             ) 
         {
             _logger = logger;
@@ -41,16 +43,15 @@ namespace ML.Proxy.Middleware
             _slowlorisModel = slowlorisModel;
             _transformationService = transformationService;
             _captureService = captureService;
-            _cache = cache;
             _blacklistService = blacklistService;
+            _safelistService = safelistService;
+            _packetService = packetService;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var cacheKey = "Last-Packet";
-            var initialCacheKey = "First-Packet";
-            var timestamp = DateTime.Now;
-            var initialPacketTimestamp = DateTime.Now;
+            DateTime initialPacketTimestamp, timestamp;
+            initialPacketTimestamp = timestamp = DateTime.Now;
 
             var packet = _captureService.CaptureTraffic();
 
@@ -58,35 +59,42 @@ namespace ML.Proxy.Middleware
             {
                 _logger.LogWarning("No packet is available!");
                 await _next.Invoke(context);
+                return;
             }
             else
             {
+                var isOnSafelist = await _safelistService.IsOnSafelist(context);
+                
+                if (isOnSafelist)
+                {
+                    await _next.Invoke(context);
+                    return;
+                }
+                
                 var potentialAttacker = await _blacklistService.IsIPBlacklisted(context);
 
                 if (potentialAttacker.IsBlacklisted)
                 {
                     AddPredictedAttackHeader(context, true);
                     await _next.Invoke(context);
+                    return;
                 }
 
                 try
                 {
-                    var firstPacket = await _cache.GetAsync<RawPacketCapture>(initialCacheKey);
-                    var lastPacket = await _cache.GetAsync<RawPacketCapture>(cacheKey);
+                    (var firstPacket, var lastPacket) = await _packetService.GetInitialAndLastPacket();
+
                     if (lastPacket is not null)
                     {
                         timestamp = lastPacket.Timeval.Date;
                         initialPacketTimestamp = firstPacket.Timeval.Date;
-                        // Hinzufügen des alten letzten Paketes für die Historie
-                        await _cache.UpdateAsync(cacheKey, timestamp.ToBinary().ToString());
-                        // Setzen eines neuen letzten Paketes für die Zeitstempel
-                        await _cache.SetAsync(cacheKey, packet);
+
+                        await _packetService.AddNewPacket(packet);
                     }
                     else
                     {
                         // Ist kein letztes Paket im Cache, füge ein initiales Paket hinzu
-                        await _cache.SetAsync(initialCacheKey, packet);
-                        await _cache.SetAsync(cacheKey, packet);
+                        await _packetService.AddInitialPacket(packet);
                     }
                 }
                 catch(Exception e)
