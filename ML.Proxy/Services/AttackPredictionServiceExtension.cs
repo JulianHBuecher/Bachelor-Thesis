@@ -14,17 +14,17 @@ namespace ML.Proxy.Services
             services.AddPredictionEnginePool<GoldenEyeTrafficData, NetworkAttackPrediction>()
                 .FromUri(
                     modelName: "GoldenEyeAttackModel",
-                    uri: configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:GoldenEye:Model-Path"),
+                    uri: configuration.GetValue<string>("ML.Proxy.ML-Modell:Optimized:GoldenEye:Model-Path"),
                     period: TimeSpan.FromMinutes(10));
             services.AddPredictionEnginePool<LOICTrafficData, NetworkAttackPrediction>()
                 .FromUri(
                     modelName: "LOICAttackModel",
-                    uri: configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:LOIC:Model-Path"),
+                    uri: configuration.GetValue<string>("ML.Proxy.ML-Modell:Optimized:LOIC:Model-Path"),
                     period: TimeSpan.FromMinutes(10));
             services.AddPredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction>()
                 .FromUri(
                     modelName: "SlowlorisAttackModel",
-                    uri: configuration.GetValue<string>("ML.Proxy.ML-Modell:ZIP:Slowloris:Model-Path"),
+                    uri: configuration.GetValue<string>("ML.Proxy.ML-Modell:Optimized:Slowloris:Model-Path"),
                     period: TimeSpan.FromMinutes(10));
 
             services.TryAddSingleton<IRequestProcessingService, RequestProcessingService>();

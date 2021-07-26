@@ -23,4 +23,8 @@
     <ProjectReference Include="..\ML.Proxy.DataModels\ML.Proxy.DataModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MLModelle\Optimized\" />
+  </ItemGroup>
+
 </Project>

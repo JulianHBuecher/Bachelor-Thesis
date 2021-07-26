@@ -101,7 +101,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
                 case nameof(GoldenEyeTrafficData):
                     inputColumnNames.AddRange(new List<string>
                     {
-                        nameof(GoldenEyeTrafficData.BwdPktLenStd),
+                        //nameof(GoldenEyeTrafficData.BwdPktLenStd),
                         nameof(GoldenEyeTrafficData.FlowIATMin),
                         nameof(GoldenEyeTrafficData.FwdIATMin),
                         nameof(GoldenEyeTrafficData.FlowIATMean)
@@ -110,7 +110,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
                 case nameof(LOICTrafficData):
                     inputColumnNames.AddRange(new List<string>
                     {
-                        nameof(LOICTrafficData.BwdPktLenStd),
+                        //nameof(LOICTrafficData.BwdPktLenStd),
                         nameof(LOICTrafficData.PktSizeAvg),
                         nameof(LOICTrafficData.FlowDuration),
                         nameof(LOICTrafficData.FlowIATStd)
@@ -120,7 +120,7 @@ namespace ML.Proxy.ModelTrainer.MachineLearning.Common
                     inputColumnNames.AddRange(new List<string>
                     {
                         nameof(SlowlorisTrafficData.FlowDuration),
-                        nameof(SlowlorisTrafficData.BwdIATMean),
+                        //nameof(SlowlorisTrafficData.BwdIATMean),
                         nameof(SlowlorisTrafficData.FwdIATMin),
                         nameof(SlowlorisTrafficData.FwdIATMean)
                     });
