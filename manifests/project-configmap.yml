@@ -24,9 +24,9 @@ data:
   ML.Proxy.ML-Modell__ONNX__GoldenEye__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/GoldenEyeTrafficData-classification.onnx
   ML.Proxy.ML-Modell__ONNX__LOIC__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/LOICTrafficData-classification.onnx
   ML.Proxy.ML-Modell__ONNX__Slowloris__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/SlowlorisTrafficData-classification.onnx
-  ML.Proxy.ML-Modell__Optimized__GoldenEye__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/GoldenEyeTrafficData-classification.onnx
-  ML.Proxy.ML-Modell__Optimized__LOIC__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/LOICTrafficData-classification.onnx
-  ML.Proxy.ML-Modell__Optimized__Slowloris__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/SlowlorisTrafficData-classification.onnx
+  ML.Proxy.ML-Modell__Optimized__GoldenEye__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/GoldenEyeTrafficData-classification.zip
+  ML.Proxy.ML-Modell__Optimized__LOIC__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/LOICTrafficData-classification.zip
+  ML.Proxy.ML-Modell__Optimized__Slowloris__Model-Path: https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/SlowlorisTrafficData-classification.zip
   Serilog__MinimumLevel__Default: Information
   Serilog__MinimumLevel__Override__Microsoft: Warning
   Serilog__MinimumLevel__Override__System: Warning

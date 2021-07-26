@@ -7,8 +7,6 @@ namespace ML.Proxy.DataModels
     /// </summary>
     public class GoldenEyeTrafficData
     {
-        //[LoadColumn(0)]
-        //public float BwdPktLenStd;
         [LoadColumn(1)]
         public float FlowIATMin;
         [LoadColumn(2)]
@@ -22,16 +20,11 @@ namespace ML.Proxy.DataModels
 
         public GoldenEyeTrafficData(NetworkAttack attack)
         {
-            //BwdPktLenStd = attack.BwdPktLenStd;
             FlowIATMin = attack.FlowIATMin;
             FwdIATMin = attack.FwdIATMin;
             FlowIATMean = attack.FlowIATMean;
         }
 
-        //public override string ToString()
-        //{
-        //    return $"Metrics for GoldenEyeTraffic: BwdPktLenStd: {BwdPktLenStd}, FlowIATMin: {FlowIATMin}, FwdIATMin: {FwdIATMin}, FlowIATMean: {FlowIATMean}";
-        //}
         public override string ToString()
         {
             return $"Metrics for GoldenEyeTraffic: FlowIATMin: {FlowIATMin}, FwdIATMin: {FwdIATMin}, FlowIATMean: {FlowIATMean}";

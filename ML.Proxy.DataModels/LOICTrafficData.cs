@@ -7,8 +7,6 @@ namespace ML.Proxy.DataModels
     /// </summary>
     public class LOICTrafficData
     {
-        //[LoadColumn(0)]
-        //public float BwdPktLenStd;
         [LoadColumn(1)]
         public float PktSizeAvg;
         [LoadColumn(2)]
@@ -22,16 +20,11 @@ namespace ML.Proxy.DataModels
 
         public LOICTrafficData(NetworkAttack attack)
         {
-            //BwdPktLenStd = attack.BwdPktLenStd;
             PktSizeAvg = attack.PktSizeAvg;
             FlowDuration = attack.FlowDuration;
             FlowIATStd = attack.FlowIATStd;
         }
 
-        //public override string ToString()
-        //{
-        //    return $"Metrics for LOICTraffic: BwdPktLenStd: {BwdPktLenStd}, PktSizeAvg: {PktSizeAvg}, FlowDuration: {FlowDuration}, FlowIATStd: {FlowIATStd}";
-        //}
         public override string ToString()
         {
             return $"Metrics for LOICTraffic: PktSizeAvg: {PktSizeAvg}, FlowDuration: {FlowDuration}, FlowIATStd: {FlowIATStd}";

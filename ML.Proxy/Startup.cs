@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +32,11 @@ namespace ML.Proxy
             //ThreadPool.SetMinThreads(20, 20);
             services.AddControllers();
 
+            services.Configure<ForwardedHeadersOptions>(o =>
+            {
+                o.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             // Adding the proxy funtions to the app
             var proxyBuilder = services.AddReverseProxy();
             // Initializing the reverse proxy (by configuration out of appsettings.json)
@@ -53,6 +59,9 @@ namespace ML.Proxy
                     };
                 });
             }
+
+            // Adding Authorization and Authentication for Safelist and Blacklist Endpoints
+            services.AddIdentityServerConnection(_configuration);
 
             // Adding a PredictionEnginePool for loading the model in a thread-safe environment
             services.AddMachineLearningAttackPrediction(_configuration);
@@ -83,9 +92,14 @@ namespace ML.Proxy
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseForwardedHeaders();
+
             // Middleware added before UseRouting() will see all requests and can manipulate them
             // before any routing takes place
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             // For Prometheus and Grafana
             app.UseMetricServer();
@@ -97,14 +111,18 @@ namespace ML.Proxy
             // Middleware for Throttler regarding throttling incoming requests
             app.UseThrottler();
 
+
             // Middleware added between UseRouting() and UseEndpoints() can call HttpContext.GetEndpoint()
             // to check which endpoint routing matched the request to (if any), and use
             // any metadata that was associated with that endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
                 // Register Reverse Proxy Routes and Enable Throttling for these Routes
-                endpoints.MapReverseProxy().Throttle();
+                endpoints.MapReverseProxy()
+                    .Throttle()
+                    .AllowAnonymous();
             });
         }
     }

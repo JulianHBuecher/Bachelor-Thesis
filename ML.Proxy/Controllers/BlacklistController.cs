@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ML.Proxy.Services;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace ML.Proxy.Controllers
         }
 
         [HttpGet]
+        [Authorize("HasReadScope")]
         public async Task<ActionResult> GetBlacklist()
         {
             var blacklist = await _blacklistService.GetBlacklist();

@@ -29,13 +29,18 @@ namespace IdentityServer
                 new ApiScope("locationdata.read", "Reading data from the location api."),
                 new ApiScope("locationdata.write", "Writing data to the location api."),
                 new ApiScope("locationdata.update", "Updating data of location api."),
-                new ApiScope("locationdata.delete", "Deleting data out of the location api.")
+                new ApiScope("locationdata.delete", "Deleting data out of the location api."),
+                new ApiScope("safelist.read", "Reading data from the safelist at ML.Proxy"),
+                new ApiScope("safelist.write", "Writing data to the safelist at ML.Proxy"),
+                new ApiScope("safelist.delete", "Deleting data out of the safelist at ML.Proxy"),
+                new ApiScope("safelist.update", "Updating data the safelist at ML.Proxy"),
+                new ApiScope("blacklist.read", "Reading data from the blacklist at ML.Proxy")
             };
 
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>()
             {
-                new ApiResource 
+                new ApiResource
                 {
                     Name = "weatherdata",
                     DisplayName = "API for requesting weather data",
@@ -49,7 +54,7 @@ namespace IdentityServer
                     // For setting the wished SigningAlgorithm
                     //AllowedAccessTokenSigningAlgorithms = { SecurityAlgorithms.RsaSsaPssSha256 }
                 },
-                new ApiResource 
+                new ApiResource
                 {
                     Name = "locationdata",
                     DisplayName = "API for requesting location data",
@@ -61,9 +66,21 @@ namespace IdentityServer
                         "locationdata.delete"
                     }
                 },
+                new ApiResource
+                {
+                    Name = "ml.proxy",
+                    DisplayName = "Machine Learning Proxy for DoS- and DDoS-Attack Prevention",
+                    Scopes = {
+                        "safelist.read",
+                        "safelist.write",
+                        "safelist.delete",
+                        "safelist.update",
+                        "blacklist.read"
+                    } 
+                }
             };
 
-        public static IEnumerable<Client> Clients =>
+            public static IEnumerable<Client> Clients =>
             new Client[]
             {
                 // interactive client using code flow + pkce
@@ -101,6 +118,15 @@ namespace IdentityServer
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = { "weatherdata.read" }
+                },
+                // machine client for configuring safelist
+                new Client
+                {
+                    ClientId = "Postman.Client",
+                    ClientName = "Postman Client",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedScopes = { "safelist.read", "safelist.write", "safelist.delete", "safelist.update", "blacklist.read" }
                 }
             };
     }

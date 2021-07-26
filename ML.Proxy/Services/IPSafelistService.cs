@@ -91,7 +91,10 @@ namespace ML.Proxy.Services
 
             if (safelist.Any() && safelist.Contains(ip))
             {
-                await _cache.RemoveAsync(ip);
+                safelist.Remove(ip);
+
+                await _cache.SetAsync($"{_cacheKey}", safelist);
+
                 _logger.LogInformation($"IP-Address {ip} is removed from safelist.");
             }
             else

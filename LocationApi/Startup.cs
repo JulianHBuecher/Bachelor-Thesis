@@ -79,7 +79,7 @@ namespace LocationApi
             app.UseForwardedHeaders();
 
             app.UseRouting();
-            app.UseCors("AllowAlHeaders");
+            app.UseCors("AllowAllHeaders");
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -32,14 +32,12 @@ namespace ML.Proxy.Services
             
             var networkAttack = new NetworkAttack()
             {
-                //BwdPktLenStd = 0,
                 FlowIATMin   = iatCalculation,
                 FwdIATMin    = iatCalculation,
                 FlowIATMean  = iatCalculation,
                 PktSizeAvg   = packet.PayloadPacket.Bytes.Length,
                 FlowDuration = flowCalculation,
                 FlowIATStd   = iatCalculation,
-                //BwdIATMean   = 0,
                 FwdIATMean   = iatCalculation,
             };
             

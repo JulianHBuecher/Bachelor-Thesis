@@ -6,7 +6,6 @@
     public class NetworkAttack
     {
         // GoldenEye
-        //public float BwdPktLenStd { get; set; }
         public float FlowIATMin { get; set; }
         public float FwdIATMin { get; set; }
         public float FlowIATMean { get; set; }
@@ -17,7 +16,6 @@
         public float FlowIATStd { get; set; }
 
         // Slowloris (ohne FlowDuration und FwdIATMin)
-        //public float BwdIATMean { get; set; }
         public float FwdIATMean { get; set; }
     }
 }

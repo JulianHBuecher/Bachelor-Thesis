@@ -115,6 +115,12 @@ services:
         environment: 
             - ASPNETCORE_URLS=http://+;https://+
             - ASPNETCORE_HTTPS_PORT=443
+            - IdentityServer__Authority=http://identityserver
+            - IdentityServer__Audience=ml.proxy
+            - IdentityServer__ValidIssuers__0=https://reverse.proxy.localhost/identity
+            - IdentityServer__ValidIssuers__1=http://identityserver
+            - IdentityServer__ValidIssuers__2=https://localhost/identity
+            - IdentityServer__RequireHttpsMetadata=false
             - ASPNETCORE_Kestrel__Certificates__Default__Password=changeit
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ML.Proxy.pfx
             - ML.Proxy.ML-Modell__ZIP__GoldenEye__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ZIP/GoldenEyeTrafficData-classification.zip
@@ -123,10 +129,9 @@ services:
             - ML.Proxy.ML-Modell__ONNX__GoldenEye__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/GoldenEyeTrafficData-classification.onnx
             - ML.Proxy.ML-Modell__ONNX__LOIC__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/LOICTrafficData-classification.onnx
             - ML.Proxy.ML-Modell__ONNX__Slowloris__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/ONNX/SlowlorisTrafficData-classification.onnx
-            - ML.Proxy.ML-Modell__Optimized__GoldenEye__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/GoldenEyeTrafficData-classification.onnx
-            - ML.Proxy.ML-Modell__Optimized__LOIC__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/LOICTrafficData-classification.onnx
-            - ML.Proxy.ML-Modell__Optimized__Slowloris__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/SlowlorisTrafficData-classification.onnx
-            # - Redis__Connection-String=redis-requestcache:6379
+            - ML.Proxy.ML-Modell__Optimized__GoldenEye__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/GoldenEyeTrafficData-classification.zip
+            - ML.Proxy.ML-Modell__Optimized__LOIC__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/LOICTrafficData-classification.zip
+            - ML.Proxy.ML-Modell__Optimized__Slowloris__Model-Path=https://github.com/JulianHBuecher/Bachelor-Thesis/raw/main/ML.Proxy.ModelTrainer/MLModelle/Optimized/SlowlorisTrafficData-classification.zip
             - Redis__Connection-String=redis-requestcache
             - ASPNETCORE_ENVIRONMENT=Docker
             - Serilog__MinimumLevel__Default=Information

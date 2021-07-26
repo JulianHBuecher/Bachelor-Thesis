@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ML.Proxy.Services;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace ML.Proxy.Controllers
         }
 
         [HttpGet]
+        [Authorize("HasReadScope")]
         public async Task<ActionResult> GetSafelist()
         {
             var entries = await _safelist.GetSafelistEntries();
@@ -32,6 +34,7 @@ namespace ML.Proxy.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize("HasWriteScope")]
         public async Task<ActionResult> AddToSafelist([FromQuery] string ip)
         {
             var isOnSafelist = await _safelist.IsOnSafelist(ip);
@@ -48,7 +51,8 @@ namespace ML.Proxy.Controllers
             return Ok("Added to safelist");
         }
 
-        [HttpPost("remove")]
+        [HttpDelete("remove")]
+        [Authorize("HasDeleteScope")]
         public async Task<ActionResult> RemoveFromSafelist([FromQuery] string ip)
         {
             var isOnSafelist = await _safelist.IsOnSafelist(ip);

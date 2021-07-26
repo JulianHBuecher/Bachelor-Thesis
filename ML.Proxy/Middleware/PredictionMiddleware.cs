@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ML;
 using ML.Proxy.DataModels;
-using ML.Proxy.Models;
 using ML.Proxy.Services;
 using System;
 using System.Threading.Tasks;
@@ -84,7 +83,7 @@ namespace ML.Proxy.Middleware
                 {
                     (var firstPacket, var lastPacket) = await _packetService.GetInitialAndLastPacket();
 
-                    if (lastPacket is not null)
+                    if (lastPacket is not null && firstPacket is not null)
                     {
                         timestamp = lastPacket.Timeval.Date;
                         initialPacketTimestamp = firstPacket.Timeval.Date;
