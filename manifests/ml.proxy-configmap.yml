@@ -1,72 +1,61 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ml-proxy
+  name: ml-proxy-yarp-config
   namespace: jb-thesis-project
 data:
-  ML.Proxy: |-
+  appsettings.json: |-
     {
-      "Routes": {
-        "angularSpa": {
-          "ClusterId": "spaCluster",
-          "Match": {
-            "Path": "/{**catch-all}"
-          }
-        },
-        "weatherApi": {
-          "ClusterId": "weatherCluster",
-          "Match": {
-            "Path": "/weatherdata/{*any}"
+      "ML.Proxy": {
+        "Routes": {
+          "weatherApi": {
+            "ClusterId": "weatherCluster",
+            "Match": {
+              "Path": "/weatherdata/{*any}"
+            },
+            "Transforms": [
+              { "PathRemovePrefix": "/weatherdata" }
+            ]
           },
-          "Transforms": [
-            { "PathRemovePrefix": "/weatherdata" }
-          ]
-        },
-        "locationApi": {
-          "ClusterId": "locationCluster",
-          "Match": {
-            "Path": "/locationdata/{*any}"
+          "locationApi": {
+            "ClusterId": "locationCluster",
+            "Match": {
+              "Path": "/locationdata/{*any}"
+            },
+            "Transforms": [
+              { "PathRemovePrefix": "/locationdata" }
+            ]
           },
-          "Transforms": [
-            { "PathRemovePrefix": "/locationdata" }
-          ]
+          "identityServer": {
+            "ClusterId": "identityCluster",
+            "Match": {
+              "Path": "/identity/{*any}"
+            },
+            "Transforms": [
+              { "PathRemovePrefix": "/identity" }
+            ]
+          }
         },
-        "identityServer": {
-          "ClusterId": "identityCluster",
-          "Match": {
-            "Path": "/identity/{*any}"
+        "Clusters": {
+          "weatherCluster": {
+            "Destinations": {
+              "weatherApi": {
+                "Address": "http://weatherapi"
+              }
+            }
           },
-          "Transforms": [
-            { "PathRemovePrefix": "/identity" }
-          ]
-        }
-      },
-      "Clusters": {
-        "spaCluster": {
-          "Destinations": {
-            "spa": {
-              "Address": "http://angular-webapp"
+          "locationCluster": {
+            "Destinations": {
+              "locationApi": {
+                "Address": "http://locationapi"
+              }
             }
-          }
-        },
-        "weatherCluster": {
-          "Destinations": {
-            "weatherApi": {
-              "Address": "http://weatherapi"
-            }
-          }
-        },
-        "locationCluster": {
-          "Destinations": {
-            "locationApi": {
-              "Address": "http://locationapi"
-            }
-          }
-        },
-        "identityCluster": {
-          "Destinations": {
-            "identityServer": {
-              "Address": "http://identityserver"
+          },
+          "identityCluster": {
+            "Destinations": {
+              "identityServer": {
+                "Address": "http://identityserver"
+              }
             }
           }
         }

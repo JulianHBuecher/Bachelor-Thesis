@@ -29,7 +29,6 @@ namespace ML.Proxy
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //ThreadPool.SetMinThreads(20, 20);
             services.AddControllers();
 
             services.Configure<ForwardedHeadersOptions>(o =>
@@ -50,7 +49,6 @@ namespace ML.Proxy
             {
                 services.AddStackExchangeRedisCache(options =>
                 {
-                    //options.Configuration = _configuration.GetValue<string>("Redis:Connection-String");
                     options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
                     {
                         EndPoints = { _configuration.GetValue<string>("Redis:Connection-String") },
@@ -78,8 +76,7 @@ namespace ML.Proxy
                         .SafeList.IP(
                             _configuration.GetSection("Secure-IP-Addresses")
                                 .GetChildren().Select(ip => ip.GetChildren().Select(safeIp => safeIp.Value).FirstOrDefault())
-                                .ToArray() ?? Array.Empty<string>()
-                                );
+                                .ToArray() ?? Array.Empty<string>());
                 });
             }).AddDistributedCounterStore();
         }
@@ -110,7 +107,6 @@ namespace ML.Proxy
 
             // Middleware for Throttler regarding throttling incoming requests
             app.UseThrottler();
-
 
             // Middleware added between UseRouting() and UseEndpoints() can call HttpContext.GetEndpoint()
             // to check which endpoint routing matched the request to (if any), and use

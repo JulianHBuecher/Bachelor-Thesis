@@ -81,19 +81,19 @@ namespace ML.Proxy.Middleware
 
                 try
                 {
-                    (var firstPacket, var lastPacket) = await _packetService.GetInitialAndLastPacket();
+                    (var firstPacket, var lastPacket) = await _packetService.GetInitialAndLastPacket(context);
 
                     if (lastPacket is not null && firstPacket is not null)
                     {
                         timestamp = lastPacket.Timeval.Date;
                         initialPacketTimestamp = firstPacket.Timeval.Date;
 
-                        await _packetService.AddNewPacket(packet);
+                        await _packetService.AddNewPacket(packet, context);
                     }
                     else
                     {
                         // Ist kein letztes Paket im Cache, füge ein initiales Paket hinzu
-                        await _packetService.AddInitialPacket(packet);
+                        await _packetService.AddInitialPacket(packet, context);
                     }
                 }
                 catch(Exception e)

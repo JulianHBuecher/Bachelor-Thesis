@@ -30,25 +30,16 @@ spec:
           pathType: Prefix
           backend:
             service:
+              name: angular-webapp
+              port:
+                number: 80
+        - path: /(.*/.*)
+          pathType: Prefix
+          backend:
+            service:
               name: ml-proxy
               port:
                 number: 80
-        # - backend:
-        #     serviceName: angular-webapp
-        #     servicePort: 80
-        #   path: /(.*)
-        # - backend:
-        #     serviceName: identityserver
-        #     servicePort: 80
-        #   path: /identity/(.*)
-        # - backend:
-        #     serviceName: weatherapi
-        #     servicePort: 80
-        #   path: /weatherdata/(.*)
-        # - backend:
-        #     serviceName: locationapi
-        #     servicePort: 80
-        #   path: /locationdata/(.*)
         - path: /kibana/(.*)
           pathType: Prefix
           backend:
