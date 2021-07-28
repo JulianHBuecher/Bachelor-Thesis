@@ -34,7 +34,10 @@ namespace IdentityServer
                 new ApiScope("safelist.write", "Writing data to the safelist at ML.Proxy"),
                 new ApiScope("safelist.delete", "Deleting data out of the safelist at ML.Proxy"),
                 new ApiScope("safelist.update", "Updating data the safelist at ML.Proxy"),
-                new ApiScope("blacklist.read", "Reading data from the blacklist at ML.Proxy")
+                new ApiScope("blacklist.read", "Reading data from the blacklist at ML.Proxy"),
+                new ApiScope("blacklist.write", "Writing data to the blacklist at ML.Proxy"),
+                new ApiScope("blacklist.update", "Updating data in the blacklist at ML.Proxy"),
+                new ApiScope("blacklist.delete", "Deleting data from the blacklist at ML.Proxy")
             };
 
         public static IEnumerable<ApiResource> ApiResources =>
@@ -70,15 +73,19 @@ namespace IdentityServer
                 {
                     Name = "ml.proxy",
                     DisplayName = "Machine Learning Proxy for DoS- and DDoS-Attack Prevention",
-                    Scopes = {
+                    Scopes = 
+                    {
                         "safelist.read",
                         "safelist.write",
                         "safelist.delete",
                         "safelist.update",
-                        "blacklist.read"
-                    } 
-                }
-            };
+                        "blacklist.read",
+                        "blacklist.write",
+                        "blacklist.update",
+                        "blacklist.delete"
+                    }                    
+                }                        
+            };                           
 
             public static IEnumerable<Client> Clients =>
             new Client[]
@@ -126,7 +133,17 @@ namespace IdentityServer
                     ClientName = "Postman Client",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = { "safelist.read", "safelist.write", "safelist.delete", "safelist.update", "blacklist.read" }
+                    AllowedScopes = 
+                    {
+                        "safelist.read",
+                        "safelist.write",
+                        "safelist.delete",
+                        "safelist.update",
+                        "blacklist.read",
+                        "blacklist.write",
+                        "blacklist.update",
+                        "blacklist.delete"
+                    }
                 }
             };
     }

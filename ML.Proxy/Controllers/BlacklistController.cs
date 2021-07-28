@@ -35,5 +35,38 @@ namespace ML.Proxy.Controllers
                 return NotFound("No Addresses are blacklisted.");
             }
         }
+
+        [HttpPost("add")]
+        [Authorize("HasWriteScope")]
+        public async Task<ActionResult> AddIPToBlacklist([FromQuery] string ip)
+        {
+            var isAddedToBlackist = await _blacklistService.BlacklistIP(ip);
+
+            if (isAddedToBlackist)
+            {
+                return Ok($"{ip} is added to blacklist.");
+            }
+            else
+            {
+                return BadRequest($"{ip} already exists on blacklist.");
+            }
+
+        }
+
+        [HttpDelete("remove")]
+        [Authorize("HasDeleteScope")]
+        public async Task<ActionResult> RemoveIPFromBlacklist([FromQuery] string ip)
+        {
+            var isRemovedFromBlacklist = await _blacklistService.RemoveIPFromBlacklist(ip);
+
+            if (isRemovedFromBlacklist)
+            {
+                return Ok($"{ip} is successfully removed from blacklist.");
+            }
+            else
+            {
+                return NotFound($"{ip} is not on blacklist.");
+            }
+        }
     }
 }

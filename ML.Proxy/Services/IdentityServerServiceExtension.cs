@@ -32,17 +32,17 @@ namespace ML.Proxy.Services
                 o.AddPolicy("HasWriteScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireScope("safelist.write");
+                    policy.RequireScopeEither("safelist.write", "blacklist.write");
                 });
                 o.AddPolicy("HasUpdateScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireScope("safelist.update");
+                    policy.RequireScopeEither("safelist.update", "blacklist.update");
                 });
                 o.AddPolicy("HasDeleteScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireScope("safelist.delete");
+                    policy.RequireScopeEither("safelist.delete", "blacklist.delete");
                 });
             });
 

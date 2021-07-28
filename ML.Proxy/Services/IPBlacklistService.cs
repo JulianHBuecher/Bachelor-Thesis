@@ -29,14 +29,37 @@ namespace ML.Proxy.Services
             if (blacklist.Any() && blacklist.Contains(ip))
             {
                 _logger.LogInformation($"IP-Address {ip} is already on blacklist.");
+
             }
             else
             {
                 blacklist.Add(ip);
 
-                await _cache.SetAsync($"{_cacheKey}", blacklist);
+                await _cache.SetAsync(_cacheKey, blacklist);
 
                 _logger.LogInformation($"IP-Address {ip} is now on blacklist.");
+            }
+        }
+
+        public async Task<bool> BlacklistIP(string ip)
+        {
+            if (string.IsNullOrEmpty(ip)) { return default; }
+
+            var blacklist = await _cache.GetAsync<List<string>>(_cacheKey) ?? new List<string>();
+
+            if (blacklist.Any() && blacklist.Contains(ip))
+            {
+                _logger.LogWarning($"{ip} is already blacklisted.");
+
+                return false;
+            }
+            else
+            {
+                blacklist.Add(ip);
+
+                await _cache.SetAsync(_cacheKey, blacklist);
+
+                return true;
             }
         }
 
@@ -51,10 +74,12 @@ namespace ML.Proxy.Services
             if (blacklist.Any() && blacklist.Contains(ip))
             {
                 _logger.LogWarning($"{ip} is blacklisted and regards to potential attacker.");
+
                 return (ip, true);
             }
 
             _logger.LogInformation($"{ip} is not blacklisted and will be further processed.");
+
             return (ip, false);
         }
 
@@ -63,6 +88,30 @@ namespace ML.Proxy.Services
             var blacklist = await _cache.GetAsync<List<string>>(_cacheKey) ?? new List<string>();
 
             return blacklist;
+        }
+
+        public async Task<bool> RemoveIPFromBlacklist(string ip)
+        {
+            if (string.IsNullOrEmpty(ip)) { return default; }
+
+            var blacklist = await _cache.GetAsync<List<string>>(_cacheKey) ?? new List<string>();
+
+            if (blacklist.Any() && !blacklist.Contains(ip))
+            {
+                _logger.LogWarning($"{ip} is not on blacklist.");
+
+                return false;
+            }
+            else
+            {
+                blacklist.Remove(ip);
+
+                await _cache.SetAsync(_cacheKey, blacklist);
+
+                _logger.LogInformation($"{ip} is removed from blacklist.");
+
+                return true;
+            }
         }
 
         public static string GetClientIPAddress(HttpContext context)
