@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -23,7 +24,8 @@ namespace ML.Proxy
                 })
                 .ConfigureAppConfiguration((ctx, cfg) =>
                 {
-                    // Read appsettings.json in Runtime
+                    // Read my appsettings.json in Runtime
+                    cfg.AddJsonFile("config/appsettings.json", optional: true, reloadOnChange: true);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
