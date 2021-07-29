@@ -6,9 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  isAuthenticated: boolean;
-
-  constructor() { }
+  isMenuCollapsed: boolean = true;
+  isActive: string[];
 
   ngOnInit(): void {
   }

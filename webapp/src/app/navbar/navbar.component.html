@@ -1,24 +1,25 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
   <a class="navbar-brand" routerLinkActive="active" routerLink="/">
-    <img src="../../assets/site-logo.png" width="80" height="60" class="d-inline-block align-center pr-3" alt="">
+    <img src="site-logo.png" width="80" height="60" class="d-inline-block align-center pr-3" alt="">
       Project Bachelor-Thesis
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
   aria-controls="navbarCollapse"
   aria-expanded="false"
-  aria-label="Toggle navigation">
+  aria-label="Toggle navigation"
+  (click)="isMenuCollapsed = !isMenuCollapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse w-100 order-3 dual-collapse2" id="navbarCollapse">
+  <div class="collapse navbar-collapse w-100 order-3 dual-collapse2" id="navbarCollapse" [ngbCollapse]="isMenuCollapsed">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/home">Home</a>
+      <li class="nav-item {{isActive[0]}}">
+        <a class="nav-link" routerLink="/home" (click)="isMenuCollapsed = true; isActive = ['active', 'inactive', 'inactive']">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/fetch-weatherdata">Call Protected Weather API</a>
+      <li class="nav-item {{isActive[1]}}">
+        <a class="nav-link" routerLink="/fetch-weatherdata" (click)="isMenuCollapsed = true; isActive = ['inactive', 'active', 'inactive']">Call Protected Weather API</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/fetch-locationdata">Call Protected Location API</a>
+      <li class="nav-item {{isActive[3]}}">
+        <a class="nav-link" routerLink="/fetch-locationdata" (click)="isMenuCollapsed = true; isActive = ['inactive', 'inactive', 'active']">Call Protected Location API</a>
       </li>
     </ul>
   </div>
