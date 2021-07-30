@@ -10,7 +10,7 @@ namespace ML.Proxy.Services
     {
         private readonly IRedisCacheService _cache;
         private readonly ILogger<IPSafelistService> _logger;
-        private readonly string _cacheKey = "IP-Safelist";
+        private readonly string _cacheKey = "Safelist";
 
         public IPSafelistService(IRedisCacheService cache, ILogger<IPSafelistService> logger)
         {

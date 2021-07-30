@@ -10,7 +10,7 @@ namespace ML.Proxy.Services
     {
         private readonly IRedisCacheService _cache;
         private readonly ILogger<IPBlacklistService> _logger;
-        private readonly string _cacheKey = "Attacker-IP";
+        private readonly string _cacheKey = "Blacklist";
 
         public IPBlacklistService(IRedisCacheService cache, ILogger<IPBlacklistService> logger)
         {
