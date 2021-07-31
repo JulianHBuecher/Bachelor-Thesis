@@ -21,6 +21,7 @@ services:
             - BasepathConfig__ProxyBasePath=/identity
             - Serilog__MinimumLevel__Default=Information
             - Serilog__MinimumLevel__Override__Microsoft=Warning
+            - Serilog__MinimumLevel__Override__Microsoftr.AspNetCore.Authentication=Information
             - Serilog__MinimumLevel__Override__System=Warning
             - Serilog__Properties__Application=JB.Thesis.IdentityServer
             - Serilog__Using__0=Serilog.Sinks.Console
@@ -53,6 +54,7 @@ services:
             - IdentityServer__RequireHttpsMetadata=false
             - Serilog__MinimumLevel__Default=Information
             - Serilog__MinimumLevel__Override__Microsoft=Warning
+            - Serilog__MinimumLevel__Override__Microsoftr.AspNetCore.Authentication=Information
             - Serilog__MinimumLevel__Override__System=Warning
             - Serilog__Properties__Application=JB.Thesis.WeatherAPI
             - Serilog__Using__0=Serilog.Sinks.Console
@@ -85,6 +87,7 @@ services:
             - IdentityServer__RequireHttpsMetadata=false
             - Serilog__MinimumLevel__Default=Information
             - Serilog__MinimumLevel__Override__Microsoft=Warning
+            - Serilog__MinimumLevel__Override__Microsoftr.AspNetCore.Authentication=Information
             - Serilog__MinimumLevel__Override__System=Warning
             - Serilog__Properties__Application=JB.Thesis.LocationAPI
             - Serilog__Using__0=Serilog.Sinks.Console
@@ -136,6 +139,7 @@ services:
             - ASPNETCORE_ENVIRONMENT=Docker
             - Serilog__MinimumLevel__Default=Information
             - Serilog__MinimumLevel__Override__Microsoft=Warning
+            - Serilog__MinimumLevel__Override__Microsoftr.AspNetCore.Authentication=Information
             - Serilog__MinimumLevel__Override__System=Warning
             - Serilog__Properties__Application=JB.Thesis.ML.Proxy
             - Serilog__Using__0=Serilog.Sinks.Console

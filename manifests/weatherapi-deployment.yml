@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: weatherapi
-        image: studentenk8sregistry.azurecr.io/jb-thesis-weatherapi:v2.1
+        image: studentenk8sregistry.azurecr.io/jb-thesis-weatherapi:v2.2
         env:
         - name: Serilog__Properties__Application
           value: JB.Thesis.WeatherAPI

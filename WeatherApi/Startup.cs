@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Prometheus;
 using Serilog;
 using System.Linq;
+using WeatherApi.Middleware;
 
 namespace WeatherApi
 {
@@ -80,15 +81,19 @@ namespace WeatherApi
 
             app.UseRouting();
             app.UseCors("AllowAllHeaders");
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            // For Elasticsearch and Kibana
-            app.UseSerilogRequestLogging();
 
             // For Prometheus and Grafana
             app.UseMetricServer();
             app.UseHttpMetrics();
+
+            // For Elasticsearch and Kibana
+            app.UseSerilogRequestLogging();
+            app.UsePathbasedRequestLogging();
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+
 
             app.UseEndpoints(endpoints =>
             {

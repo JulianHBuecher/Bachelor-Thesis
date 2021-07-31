@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: locationapi
-        image: studentenk8sregistry.azurecr.io/jb-thesis-locationapi:v2.0
+        image: studentenk8sregistry.azurecr.io/jb-thesis-locationapi:v2.1
         env:
         - name: Serilog__Properties__Application
           value: JB.Thesis.LocationAPI

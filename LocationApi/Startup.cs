@@ -1,3 +1,4 @@
+using LocationApi.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,15 +81,17 @@ namespace LocationApi
 
             app.UseRouting();
             app.UseCors("AllowAllHeaders");
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            // For Elasticsearch and Kibana
-            app.UseSerilogRequestLogging();
 
             // For Prometheus and Grafana
             app.UseMetricServer();
             app.UseHttpMetrics();
+            
+            // For Elasticsearch and Kibana
+            app.UseSerilogRequestLogging();
+            app.UsePathbasedRequestLogging();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
