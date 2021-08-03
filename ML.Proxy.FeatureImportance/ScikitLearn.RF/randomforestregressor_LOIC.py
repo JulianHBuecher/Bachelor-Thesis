@@ -7,6 +7,13 @@ from sklearn.inspection import permutation_importance
 import shap
 from matplotlib import pyplot as plt
 
+###############################################################################
+# Random Forest Classification Model (Scikit-Learn)                           #
+# For GoldenEye Dataset                                                       #
+# Based on the Implementation of:                                             #
+# https://mljar.com/blog/feature-importance-in-random-forest/                 #
+###############################################################################
+
 data_path = "Data"
 optimized_data_path = "Optimized"
 
