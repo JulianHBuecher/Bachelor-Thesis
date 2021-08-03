@@ -2,12 +2,14 @@
 // See LICENSE in the project root for license information.
 
 
+using IdentityServer.Services;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Prometheus;
 using Serilog;
@@ -30,7 +32,24 @@ namespace IdentityServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            
+
+            if (Environment.IsDevelopment())
+            {
+                services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+                    {
+                        EndPoints = { Configuration.GetValue<string>("Redis:Connection-String") },
+                        AbortOnConnectFail = true,
+                        AsyncTimeout = 10000
+                    };
+                });
+            }
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllHeaders",
@@ -66,6 +85,9 @@ namespace IdentityServer
                 options.KnownNetworks.Clear();
                 options.ForwardedHeaders = ForwardedHeaders.All;
             });
+
+            services.TryAddSingleton<IRedisCacheService, RedisCacheService>();
+            services.TryAddSingleton<IIPSafelistService, IPSafelistService>();
         }
 
         public void Configure(IApplicationBuilder app)

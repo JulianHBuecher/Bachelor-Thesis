@@ -17,6 +17,7 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using Duende.IdentityServer.Test;
+using IdentityServer.Services;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -34,12 +35,14 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IIPSafelistService _cache;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
+            IIPSafelistService cache,
             TestUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -50,6 +53,7 @@ namespace IdentityServerHost.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _cache = cache;
         }
 
         /// <summary>
@@ -134,6 +138,8 @@ namespace IdentityServerHost.Quickstart.UI
                     };
 
                     await HttpContext.SignInAsync(isuser, props);
+
+                    await _cache.AddToSafelist(HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
                     if (context != null)
                     {
