@@ -17,7 +17,7 @@ namespace ML.Proxy.Middleware
         private readonly PredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction> _slowlorisModel;
         private readonly IRequestProcessingService _transformationService;
         private readonly ICaptureTrafficService _captureService;
-        private readonly IIPBlacklistService _blacklistService;
+        private readonly IIPBlocklistService _blocklistService;
         private readonly IIPSafelistService _safelistService;
         private readonly IPacketService _packetService;
 
@@ -30,7 +30,7 @@ namespace ML.Proxy.Middleware
             PredictionEnginePool<SlowlorisTrafficData, NetworkAttackPrediction> slowlorisModel,
             IRequestProcessingService transformationService,
             ICaptureTrafficService captureService,
-            IIPBlacklistService blacklistService,
+            IIPBlocklistService blocklistService,
             IIPSafelistService safelistService,
             IPacketService packetService
             ) 
@@ -42,7 +42,7 @@ namespace ML.Proxy.Middleware
             _slowlorisModel = slowlorisModel;
             _transformationService = transformationService;
             _captureService = captureService;
-            _blacklistService = blacklistService;
+            _blocklistService = blocklistService;
             _safelistService = safelistService;
             _packetService = packetService;
         }
@@ -70,9 +70,9 @@ namespace ML.Proxy.Middleware
                     return;
                 }
                 
-                var potentialAttacker = await _blacklistService.IsIPBlacklisted(context);
+                var potentialAttacker = await _blocklistService.IsIPBlocklisted(context);
 
-                if (potentialAttacker.IsBlacklisted)
+                if (potentialAttacker.IsBlocklisted)
                 {
                     AddPredictedAttackHeader(context, true);
                     await _next.Invoke(context);
@@ -109,7 +109,7 @@ namespace ML.Proxy.Middleware
 
                 if (attackPrediction.IsGoldenEyeAttack || attackPrediction.IsLOICAttack || attackPrediction.IsSlowlorisAttack)
                 {
-                    await _blacklistService.BlacklistIP(context);
+                    await _blocklistService.BlocklistIP(context);
                     // Setzen eines Headers, der den eingehenden Request als möglichen Angriff kennzeichnet
                     // Bei true: Handelt es sich um einen Angriff
                     _logger.LogWarning($"Attack predicted: Votage in Consortium:\nGoldenEye: {attackPrediction.IsGoldenEyeAttack}; LOIC: {attackPrediction.IsLOICAttack}; Slowloris: {attackPrediction.IsSlowlorisAttack}");

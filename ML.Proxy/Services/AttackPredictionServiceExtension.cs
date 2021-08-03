@@ -30,7 +30,7 @@ namespace ML.Proxy.Services
             services.TryAddSingleton<IRequestProcessingService, RequestProcessingService>();
             services.TryAddSingleton<ICaptureTrafficService, CaptureTrafficService>();
             services.TryAddSingleton<IRedisCacheService, RedisCacheService>();
-            services.TryAddSingleton<IIPBlacklistService, IPBlacklistService>();
+            services.TryAddSingleton<IIPBlocklistService, IPBlocklistService>();
             services.TryAddSingleton<IIPSafelistService, IPSafelistService>();
             services.TryAddSingleton<IPacketService, PacketService>();
         }
