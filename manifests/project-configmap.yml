@@ -38,7 +38,9 @@ data:
   Serilog__WriteTo__1__Args__nodeUris: http://elasticsearch:9200
   Serilog__WriteTo__1__Name: Elasticsearch
   Serilog__WriteTo__1__Options__0__AutoRegisterTemplate: "true"
-  # Redis__Connection-String: redis-requestcache:6379
   Redis__Connection-String: redis-requestcache
+  Secure-IP-Addresses__0__Kanzlei-Buecher: 10.244.1.58
+  # Secure-IP-Addresses__1__Kanzlei-Naujoks: 85.115.8.36
+  Secure-IP-Addresses__2__Kanzlei-Mueller: 85.216.43.76
 
 

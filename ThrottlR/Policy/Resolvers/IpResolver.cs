@@ -32,7 +32,15 @@ namespace ThrottlR
 
         public ValueTask<string> ResolveAsync(HttpContext httpContext)
         {
-            return new ValueTask<string>(httpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty);
+            var containsHeaders = httpContext.Request.Headers.TryGetValue("X-Forwarded-For", out var value);
+            if (containsHeaders)
+            {
+                return new ValueTask<string>(value);
+            }
+            else
+            {
+                return new ValueTask<string>(httpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty);
+            }
         }
     }
 }

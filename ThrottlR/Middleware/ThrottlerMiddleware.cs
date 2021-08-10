@@ -70,12 +70,26 @@ namespace ThrottlR
             }
 
             var scope = await policy.Resolver.ResolveAsync(context);
+            
+            var safeList = new List<string>();
+            foreach (var ip in policy.SafeList.Values)
+            {
+                safeList.AddRange(ip);
+            }
+
+            var safeListString = "";
+            foreach (var ip in safeList) { safeListString = $"{safeListString} {ip}"; }
+
             var isSafe = await CheckSafeScopes(context, policy, scope);
+
             if (isSafe)
             {
                 await _next.Invoke(context);
+                _logger.LogInformation($"{scope} is on safelist: {safeListString}");
                 return;
             }
+
+            _logger.LogInformation($"{scope} is not on safelist: {safeListString}");
 
             IReadOnlyList<ThrottleRule> generalRules;
             if (throttleMetadata is IThrottleRulesMetadata throttle)
