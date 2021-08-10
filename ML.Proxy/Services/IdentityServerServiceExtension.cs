@@ -27,7 +27,7 @@ namespace ML.Proxy.Services
                 o.AddPolicy("HasReadScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireScopeEither("safelist.read","blacklist.read");
+                    policy.RequireScopeEither("safelist.read", "blacklist.read");
                 });
                 o.AddPolicy("HasWriteScope", policy =>
                 {

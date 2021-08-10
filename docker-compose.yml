@@ -186,7 +186,6 @@ services:
             devnetwork:
                 aliases:
                     - "reverse.proxy.localhost"
-            # - devnetwork
         depends_on: 
             - identityserver
             - webapp

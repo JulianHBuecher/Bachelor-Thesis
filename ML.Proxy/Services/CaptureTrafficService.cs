@@ -50,7 +50,6 @@ namespace ML.Proxy.Services
                 {
                     _logger.LogInformation($"Device for Capturing found: {device.Interface.FriendlyName}");
                 
-
                     // Öffnen des Netzwerkinterfaces für das Abhören des Traffics
                     device.Open(new DeviceConfiguration 
                     { 
@@ -74,7 +73,7 @@ namespace ML.Proxy.Services
                         // Schließen des Netzwerkinterfaces
                         // In der Docker-Linux-Umgebung muss das Interface geöffnet bleiben,
                         // ansonsten werden nachfolgende Requests erst nach erneutem Öffnen des
-                        // Interfaces geöffnet
+                        // Interfaces abgehört
                         if (!OperatingSystem.IsLinux())
                         {
                             device.Close();

@@ -118,7 +118,7 @@ namespace ML.Proxy.Middleware
                 else
                 {
                     // Bei false: Wird von Seiten des ML.Proxy nichts unternommen
-                    _logger.LogInformation($"Request is not an attack.");
+                    _logger.LogInformation("Request is not an attack.");
                     AddPredictedAttackHeader(context, false);
                 }
 

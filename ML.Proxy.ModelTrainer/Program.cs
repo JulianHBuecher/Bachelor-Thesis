@@ -26,7 +26,6 @@ namespace ML.Proxy.ModelTrainer
                 // true
                 new GoldenEyeTrafficData
                 {
-                    //BwdPktLenStd = 486.0f,
                     FlowIATMin = 3f,
                     FwdIATMin = 282f,
                     FlowIATMean = 856762.714285714f,
@@ -34,7 +33,6 @@ namespace ML.Proxy.ModelTrainer
                 // false
                 new GoldenEyeTrafficData
                 {
-                    //BwdPktLenStd = 0.0f,
                     FlowIATMin = 56320514f,
                     FwdIATMin = 56320514f,
                     FlowIATMean = 56320570.5f,
@@ -42,7 +40,6 @@ namespace ML.Proxy.ModelTrainer
                 // false
                 new GoldenEyeTrafficData
                 {
-                    //BwdPktLenStd = 430.0986044197f,
                     FlowIATMin = 3f,
                     FwdIATMin = 3f,
                     FlowIATMean = 188317.142857143f,
@@ -50,7 +47,6 @@ namespace ML.Proxy.ModelTrainer
                 // true
                 new GoldenEyeTrafficData
                 {
-                    //BwdPktLenStd = 561.1844616523f,
                     FlowIATMin = 6f,
                     FwdIATMin = 23f,
                     FlowIATMean = 4583.5714285714f,
@@ -62,7 +58,6 @@ namespace ML.Proxy.ModelTrainer
                 new SlowlorisTrafficData
                 {
                     FlowDuration = 99999803f,
-                    //BwdIATMean = 99999801.0f,
                     FwdIATMin = 99999801f,
                     FwdIATMean = 99999801.0f,
                 },
@@ -70,7 +65,6 @@ namespace ML.Proxy.ModelTrainer
                 new SlowlorisTrafficData
                 {
                     FlowDuration = 9f,
-                    //BwdIATMean = 0.0f,
                     FwdIATMin = 0f,
                     FwdIATMean = 0.0f,
                 },
@@ -78,7 +72,6 @@ namespace ML.Proxy.ModelTrainer
                 new SlowlorisTrafficData
                 {
                     FlowDuration = 5236352f,
-                    //BwdIATMean = 31271.3333333333f,
                     FwdIATMin = 46f,
                     FwdIATMean = 1047270.4f,
                 },
@@ -86,7 +79,6 @@ namespace ML.Proxy.ModelTrainer
                 new SlowlorisTrafficData
                 {
                     FlowDuration = 116042452f,
-                    //BwdIATMean = 1056011.29245283f,
                     FwdIATMin = 28f,
                     FwdIATMean = 5274656.90909091f,
                 }
@@ -96,7 +88,6 @@ namespace ML.Proxy.ModelTrainer
                 // true
                 new LOICTrafficData 
                 {
-                    //BwdPktLenStd = 482.0f,
                     PktSizeAvg = 140.5714286f,
                     FlowDuration = 1001475f,
                     FlowIATStd = 408593.2899f,
@@ -104,7 +95,6 @@ namespace ML.Proxy.ModelTrainer
                 // false
                 new LOICTrafficData
                 {
-                    //BwdPktLenStd = 364.1864907f,
                     PktSizeAvg = 123.68f,
                     FlowDuration = 2036636f,
                     FlowIATStd = 104030.9467f,
@@ -112,7 +102,6 @@ namespace ML.Proxy.ModelTrainer
                 // true
                 new LOICTrafficData
                 {
-                    //BwdPktLenStd = 0.0f,
                     PktSizeAvg = 0.0f,
                     FlowDuration = 9220277f,
                     FlowIATStd = 0.0f,
@@ -120,7 +109,6 @@ namespace ML.Proxy.ModelTrainer
                 // false
                 new LOICTrafficData
                 {
-                    //BwdPktLenStd = 0.0f,
                     PktSizeAvg = 62.5f,
                     FlowDuration = 322f,
                     FlowIATStd = 0.0f,
@@ -130,7 +118,6 @@ namespace ML.Proxy.ModelTrainer
             // true
             var newSampleGoldenEye = new GoldenEyeTrafficData
             {
-                //BwdPktLenStd = 486.0f,
                 FlowIATMin = 3f,
                 FwdIATMin = 282f,
                 FlowIATMean = 856762.714285714f,
@@ -139,14 +126,12 @@ namespace ML.Proxy.ModelTrainer
             var newSampleSlowloris = new SlowlorisTrafficData
             {
                 FlowDuration = 3f,
-                //BwdIATMean = 0.0f,
                 FwdIATMin = 0f,
                 FwdIATMean = 0.0f,
             };
             // true
             var newSampleLOIC = new LOICTrafficData
             {
-                //BwdPktLenStd = 482.0f,
                 PktSizeAvg = 140.5714286f,
                 FlowDuration = 1001475f,
                 FlowIATStd = 408593.2899f,
